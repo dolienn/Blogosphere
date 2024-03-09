@@ -4,20 +4,630 @@
 
 <head>
     <title>luv2code Landing Page</title>
+    <link rel="stylesheet" th:href="@{/css/styleLanding.css}" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Mulish', sans-serif;
+}
+
+body{
+    background-color: #252954;
+}
+
+.main{
+    padding: 0 88px;
+    position: relative;
+    overflow-x: hidden;
+    background-color: #221f2f;
+}
+
+.main::before{
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 55%;
+    top: 20%;
+    background-color: #ed2ff0;
+    filter: blur(90px);
+}
+
+.main::after{
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 80%;
+    top: 44%;
+    background-color: #22a8cd;
+    filter: blur(90px);
+}
+
+.main .navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.navbar .toggler{
+    font-size: 2rem;
+    color: #c5c3c3;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    display: none;
+}
+
+.navbar .nav-btn{
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    width: 90px;
+    height: 40px;
+    color: #ccc;
+    font-size: 12px;
+}
+
+.navbar .nav-btn.selected{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.navbar .logo{
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.navbar .logo img{
+    width: 48px;
+}
+
+.navbar .logo a{
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #464646;
+}
+
+.navbar .item{
+    font-size: 13px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.navbar .item.selected{
+    background: linear-gradient(95deg, #7e22ce 3.2%, #3b82f6 99.5%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 1px solid #7e22ce;
+}
+
+.navbar .item:not(:last-child){
+    margin-right: 20px;
+}
+
+.navbar .nav-buttons.active{
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+.main .top-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10rem;
+}
+
+.top-container .info-box{
+    max-width: 50%;
+    animation: toRight 0.8s;
+}
+
+.top-container .header{
+    margin: 0;
+    color: #fff;
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 55px;
+}
+
+.top-container .info-text{
+    margin: 20px 0 32px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+}
+
+.top-container .info-buttons{
+    display: flex;
+}
+
+.top-container .info-btn{
+    cursor: pointer;
+    padding: 8px 38px;
+    border-radius: 16px;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: -1px;
+    color: #fff;
+}
+
+.top-container .info-btn.nav-btn{
+    margin-left: 20px;
+    background-color: transparent;
+    border: 1px solid #fff;
+}
+
+.top-container .info-btn.selected{
+    border: none;
+    background: linear-gradient(95deg, #7e22ce 3.2%, #3b82f6 99.5%);
+}
+
+.top-container .nft-box{
+    padding: 16px;
+    border: 1px solid #000;
+    background: linear-gradient(170deg, rgba(52, 93, 129, 0.08) 1.85%, rgba(57, 46, 75, 0.08) 98%);
+    border-radius: 2rem;
+    animation: toLeft 0.8s;
+}
+
+.top-container .nft-pic{
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+    border-radius: 1.6rem;
+}
+
+.top-container .nft-box .nft-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.top-container .nft-box .info, .top-container .nft-box .likes{
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.top-container .nft-box .info-img{
+    object-fit: cover;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.top-container .nft-box .likes .icon-box{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.top-container .nft-box .likes .icon-box .bx{
+    font-size: 30px;
+    margin-right: 8px;
+}
+
+.get-started{
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.get-started .header{
+    align-self: center;
+    color: #fff;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 72px;
+}
+
+.get-started .info-text{
+    align-self: center;
+    color: #ccc;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 36px;
+    letter-spacing: 0.5px;
+}
+
+.get-started .items-box{
+    padding: 60px 80px;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap: 25px;
+    grid-row-gap: 50px;
+    justify-content: space-around;
+}
+
+.get-started .items-box:before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 120px;
+    top: 80px;
+    background: linear-gradient(95deg, #7e22ce 3.2%, #3b82f6 99.5%);
+    filter: blur(140px);
+}
+
+.get-started .items-box .item-container p{
+    width: 100px;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+}
+
+.get-started .items-box .item-container .item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2.6rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(90px);
+}
+
+.get-started .items-box .item-container .item .bx{
+    font-size: 38px;
+    color: #eee;
+}
+
+.main .footer{
+    margin: 50px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main .copyright{
+    padding-bottom: 25px;
+    border-top: 1px solid #ccc;
+}
+
+.main .footer .footer-header{
+    max-width: 50%;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+    color: #fff;
+}
+
+.main .footer .footer-links{
+    display: flex;
+}
+
+.main .footer .footer-links .link{
+    margin-left: 70px;
+}
+
+.main .footer .footer-links .link h5{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    color: #fff;
+}
+
+.main .footer .footer-links .link p{
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.05em;
+    color: #ccc;
+}
+
+.copyright p{
+    font-size: 12px;
+    line-height: 36px;
+    color: #afafaf;
+}
+
+@media screen and (max-width: 1040px) {
+    .top-container{
+        flex-direction: column;
+    }
+
+    .top-container .info-box{
+        max-width: none;
+        margin: 60px 0;
+    }
+
+    .top-container .nft-box{
+        display: none;
+    }
+
+    .main .footer{
+        flex-direction: column;
+    }
+
+    .main .footer .footer-header{
+        max-width: 80%;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .main .footer .footer-links .link:first-child{
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 925px) {
+    .navbar .nav-links{
+        display: none;
+    }
+
+    .navbar .nav-buttons{
+        opacity: 0;
+    }
+
+    .navbar .toggler{
+        display: flex !important;
+        align-items: center;
+    }
+
+    .get-started .info-text{
+        text-align: center;
+    }
+
+    .get-started .items-box{
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-evenly;
+        padding: 50px 0;
+    }
+
+    .get-started .items-box:before{
+        height: 200px;
+        top: 90px;
+        filter: blur(120px);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .top-container{
+        margin-top: 4rem !important;
+    }
+
+    .top-container .info-box{
+        max-height: none;
+        max-width: none;
+        margin-bottom: 4rem;
+    }
+
+    .top-container .nft-box{
+        display: block;
+        max-width: none;
+        max-height: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .main{
+        padding: 0 40px;
+    }
+
+    .footer .footer-header{
+        font-size: 20px;
+        line-height: 30px;
+        max-width: 100%;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .footer .footer-links{
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .footer .footer-links .link{
+        margin-left: 20px;
+    }
+
+    .footer .footer-links .link h5{
+        font-size: 15px;
+        line-height: 35px;
+    }
+
+    .footer .footer-links .link p{
+        font-size: 11px;
+        line-height: 18px;
+    }
+}
+
+@keyframes toRight{
+    from{
+        transform: translateX(-700px);
+    }
+    to{
+        transform: translateX(0px);
+    }
+}
+
+@keyframes toLeft{
+    from{
+        transform: translateX(550px);
+    }
+    to{
+        transform: translateX(0px);
+    }
+}
+
+    </style>
 </head>
 
 <body>
-<h2>luv2code Landing Page</h2>
-<hr>
+<div class="main">
+    <!-- Navbar -->
+    <div class="navbar">
+        <a th:href="@{/}" class="logo">
+            <img src="logo.jpeg" alt="logo">
+            <a>FreeTube</a>
+        </a>
+        <div class="nav-links">
+            <span class="item selected">Home</span>
+            <span id="scroll" class="item">Get Started</span>
+        </div>
+        <div class="nav-buttons" id="navMenu">
+            <button class="nav-btn selected">CREATE</button>
+            <a th:href="@{/showMyLoginPage}"><button class="nav-btn">SIGN IN</button></a>
+        </div>
 
-<p>
-Welcome to the landing page! This page is open to the public ... no login required :-)
-</p>
+        <button class="toggler">
+            <i class='bx bx-menu'></i>
+        </button>
+    </div>
+    <!-- End of Navbar -->
 
-<hr>
-<p>
-    <a th:href="@{/employees}">Access Secure Site</a>
-</p>
+    <!-- Top Container -->
+    <div class="top-container">
+        <div class="info-box">
+            <p class="header">
+                Discover, collect, and charity in extraordinary NFT marketplace
+            </p>
+            <p class="info-text">
+                Explore the best collections from hand-picked digital artists out there and find your gem here in
+                AsmrProg
+            </p>
+            <div class="info-buttons">
+                <button class="info-btn selected">Explore</button>
+                <button class="info-btn nav-btn">Create</button>
+            </div>
+        </div>
+        <div class="nft-box">
+            <img src="nft.jpg" class="nft-pic">
+            <div class="nft-content">
+                <div class="info">
+                    <img src="logo.png" class="info-img">
+                    <div>
+                        <p>
+                            Reza
+                        </p>
+                        <p>
+                            0.27 Eth
+                        </p>
+                    </div>
+                </div>
+                <div class="likes">
+                    <div class="icon-box">
+                        <i class='bx bx-heart'></i>
+                        258
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Top Container -->
+
+    <!-- Get Stearted -->
+    <div class="get-started">
+        <p class="header">Getting Started</p>
+        <p class="info-text">Buy and Sell NFTs from the world's top artists</p>
+        <div class="items-box">
+            <div class="item-container">
+                <div class="item">
+                    <i class='bx bx-check-shield'></i>
+                </div>
+                <p>All transactions are safe</p>
+            </div>
+            <div class="item-container">
+                <div class="item">
+                    <i class='bx bx-wallet-alt'></i>
+                </div>
+                <p>Connect your wallet</p>
+            </div>
+            <div class="item-container">
+                <div class="item">
+                    <i class='bx bx-money'></i>
+                </div>
+                <p>Always free of any charges</p>
+            </div>
+            <div class="item-container">
+                <div class="item">
+                    <i class='bx bx-rocket'></i>
+                </div>
+                <p>Very fast transactions</p>
+            </div>
+        </div>
+    </div>
+    <!-- End of Get Started -->
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-header">
+            If you want something to be truly and wholeheartedly yours, turn it into an NFT.
+        </div>
+        <div class="footer-links">
+            <div class="link">
+                <h5>Marketplace</h5>
+                <p>Home</p>
+                <p>Get Started</p>
+                <p>Discover</p>
+                <p>Learn More</p>
+            </div>
+            <div class="link">
+                <h5>Company</h5>
+                <p>About Us</p>
+                <p>Services</p>
+                <p>Team Info</p>
+            </div>
+            <div class="link">
+                <h5>Contact</h5>
+                <p>Github</p>
+                <p>Instagram</p>
+                <p>Twitter</p>
+                <p>Facebook</p>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- End of Footer -->
+    <div class="copyright">
+        <p>Copyright 2023, AsmrProg Youtube Channel.</p>
+    </div>
+
+</div>
+<script>
+    const toggler = document.querySelector(".toggler");
+const navMenu = document.querySelector("#navMenu");
+
+toggler.addEventListener('click', function () {
+    navMenu.classList.toggle("active")
+});
+
+const scroll = document.getElementById("scroll");
+
+scroll.addEventListener('click', () => {
+    document.querySelector(".get-started").scrollIntoView({ behavior: 'smooth' });
+})
+</script>
 
 </body>
 </html>
