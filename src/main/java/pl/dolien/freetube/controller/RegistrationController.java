@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @RequestMapping("/register")
 public class RegistrationController {
 
-	private Logger logger = Logger.getLogger(getClass().getName());
+	private final Logger logger = Logger.getLogger(getClass().getName());
 
     private UserService userService;
 
