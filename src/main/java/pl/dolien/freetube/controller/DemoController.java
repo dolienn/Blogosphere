@@ -16,6 +16,11 @@ public class DemoController {
         return "home";
     }
 
+    @GetMapping("/showUploadVideoPage")
+    public String showUploadVideoPage() {
+        return "upload-video";
+    }
+
     @GetMapping("/leaders")
     public String showLeaders() {
         return "leaders";

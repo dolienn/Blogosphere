@@ -42,6 +42,16 @@ public class DemoControllerTest {
     }
 
     @Test
+    public void showUploadHttpRequest() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "upload-video");
+    }
+
+    @Test
     @WithMockUser
     public void showHomeHttpRequestAuthenticatedAccessToEmployees() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/employees"))

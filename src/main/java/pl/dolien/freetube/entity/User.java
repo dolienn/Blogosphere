@@ -3,7 +3,9 @@ package pl.dolien.freetube.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -42,6 +44,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    @OneToMany(mappedBy = "user",
+               cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                          CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Video> videos;
+
     public User(String userName, String password, boolean enabled) {
         this.userName = userName;
         this.password = password;
@@ -64,5 +71,14 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.roles = roles;
+    }
+
+    public void add(Video video) {
+        if(videos == null) {
+            videos = new ArrayList<>();
+        }
+
+        videos.add(video);
+        video.setUser(this);
     }
 }
