@@ -36,7 +36,7 @@ public class DemoSecurityConfig {
                         configurer
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/leaders/**").hasRole("MANAGER")
-                                .requestMatchers("/systems/**").hasRole("ADMIN")
+                                .requestMatchers("/admin-panel/**").hasRole("ADMIN")
                                 .requestMatchers("/register/**").permitAll()
                                 .anyRequest().authenticated()
                 )

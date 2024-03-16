@@ -14,13 +14,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
 import pl.dolien.freetube.service.UserService;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource("/application.properties")
 @AutoConfigureMockMvc
 @SpringBootTest
-public class DemoControllerTest {
+public class PostControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,30 +35,32 @@ public class DemoControllerTest {
     UserService userServiceMock;
 
     @Test
-    public void showLandingHttpRequest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/"))
+    @WithMockUser
+    public void showUploadHttpRequestWithAuthenticatedAccess() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/post/upload"))
                 .andExpect(status().isOk()).andReturn();
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(mav, "landing");
+        ModelAndViewAssert.assertViewName(mav, "upload-post");
+    }
+
+    @Test
+    public void showUploadHttpRequestWithUnauthenticatedAccess() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/upload"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/showMyLoginPage"));
     }
 
     @Test
     @WithMockUser
-    public void showHomeHttpRequestWithAuthenticatedAccess() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
-                .andExpect(status().isOk()).andReturn();
+    public void deletePostHttpRequestWithAuthenticatedAccess() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/post/delete")
+                        .param("postId", String.valueOf(1)))
+                .andExpect(status().isFound()).andReturn();
 
-        ModelAndView mav = mvcResult.getModelAndView();
-
-        ModelAndViewAssert.assertViewName(mav, "home");
-    }
-
-    @Test
-    public void showHomeHttpRequestWithUnauthenticatedAccess() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("http://localhost/showMyLoginPage"));
+        String redirectedUrl = mvcResult.getResponse().getRedirectedUrl();
+        assertNotNull(redirectedUrl);
+        assertTrue(redirectedUrl.endsWith("/post/my"));
     }
 }

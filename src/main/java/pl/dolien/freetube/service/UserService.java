@@ -1,13 +1,14 @@
 package pl.dolien.freetube.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import pl.dolien.freetube.entity.Review;
 import pl.dolien.freetube.entity.Role;
 import pl.dolien.freetube.entity.User;
+import pl.dolien.freetube.entity.Post;
 import pl.dolien.freetube.user.WebUser;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
 
@@ -21,7 +22,9 @@ public interface UserService extends UserDetailsService {
 
 	void save(WebUser webUser);
 
-	void createUser(String userName, String password, String firstName, String lastName, String email, Collection<Role> roles);
+	void createUser(String userName, String password, String firstName, String lastName, String email, Collection<Role> roles, List<Post> posts, List<Review> reviews);
 
 	void deleteUser(String userName);
+
+	List<User> findAllByAsc();
 }

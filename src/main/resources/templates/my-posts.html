@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My posts</title>
+</head>
+<body>
+<div class="box-container" th:each="post : ${userPosts}">
+    <div class="box">
+        <h3 th:text="${post.title}"></h3>
+        <p th:text="${post.privacy}"></p>
+        <a th:href="@{/post/delete(postId=${post.id})}">
+<!--           th:onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">-->
+            DELETE
+        </a>
+    </div>
+</div>
+</body>
+</html>

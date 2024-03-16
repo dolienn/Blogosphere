@@ -57,8 +57,8 @@ public class RegistrationControllerTest {
 
     @Test
     public void getUsersHttpRequest() throws Exception {
-        User user = new User("tomas", "123", true, null);
-        User user2 = new User("eric", "123", true, null);
+        User user = new User("tomas", "123", true, null, null, null);
+        User user2 = new User("eric", "123", true, null, null, null);
 
         List<User> userList = new ArrayList<>(Arrays.asList(user, user2));
 
@@ -77,7 +77,7 @@ public class RegistrationControllerTest {
     @Test
     @WithMockUser
     public void createUserHttpRequestWithAuthenticatedAccess() throws Exception {
-        User user = new User("tomas", "123", true, null);
+        User user = new User("tomas", "123", true, null, null, null);
 
         List<User> userList = new ArrayList<>(Arrays.asList(user));
 

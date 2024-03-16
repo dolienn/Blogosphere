@@ -1,17 +1,12 @@
 package pl.dolien.freetube.service;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.TestPropertySource;
 import pl.dolien.freetube.dao.RoleDao;
-import pl.dolien.freetube.dao.UserDao;
-import pl.dolien.freetube.dao.PostDao;
 import pl.dolien.freetube.entity.Post;
 import pl.dolien.freetube.entity.Review;
 import pl.dolien.freetube.entity.Role;
@@ -25,53 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestPropertySource("/application.properties")
 @SpringBootTest
-public class UserServiceTest {
-
-    @Autowired
-    private JdbcTemplate jdbc;
-
-
-//    @Value("${sql.script.create.user}")
-//    private String sqlAddUser;
-
-//    @Value("${sql.script.create.role.employee}")
-//    private String sqlAddRoleEmployee;
-//
-//    @Value("${sql.script.create.role.manager}")
-//    private String sqlAddRoleManager;
-//
-//    @Value("${sql.script.create.role.admin}")
-//    private String sqlAddRoleAdmin;
-//
-//    @Value("${sql.script.create.user.relation.role}")
-//    private String sqlAddRelation;
-
-//    @Value("${sql.script.delete.user}")
-//    private String sqlDeleteUser;
-
-//    @Value("${sql.script.delete.role}")
-//    private String sqlDeleteRole;
-//
-//    @Value("${sql.script.delete.relation}")
-//    private String sqlDeleteRelation;
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
-    private PostDao postDao;
+public class PostServiceTest {
 
     @Autowired
     private PostService postService;
 
     @Autowired
-    private ReviewService reviewService;
+    private RoleDao roleDao;
+
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
     public void setup() {
@@ -97,8 +55,7 @@ public class UserServiceTest {
         user.add(review1);
 
         postService.save(userPost);
-
-        System.out.println(user.getPosts());
+        postService.save(userPost2);
 
         assertEquals("something@dolien.pl", user.getEmail(), "Lines should matches");
         assertEquals(Arrays.asList(userPost, userPost2), user.getPosts(), "Lists should matches");
@@ -108,21 +65,20 @@ public class UserServiceTest {
     }
 
     @Test
-    public void findAllUsers() {
-        assertNotNull(userService.findAll(), "Should be not null");
+    public void findAllPosts() {
+        assertNotNull(postService.findAll());
     }
 
     @Test
-    public void isUserNullCheck() {
-        assertTrue(userService.checkIfUserIsNull("some"), "Should be true");
-        assertFalse(userService.checkIfUserIsNull("a"), "Should be false");
+    public void findPostByUserName() {
+        assertNotEquals(postService.findByUserName("some"), Arrays.asList());
+        assertEquals(postService.findByUserName("a"), Arrays.asList());
     }
 
     @Test
-    public void checkIfLoadUserByUsernameIsNotNull() {
-        assertNotNull(userService.loadUserByUsername("some"));
-        assertThrows(UsernameNotFoundException.class,
-                () -> { userService.loadUserByUsername("a"); }, "Should throw exception");
+    public void findPostById() {
+        assertNotEquals(postService.findById(1), Arrays.asList());
+        assertNull(postService.findById(0));
     }
 
     @AfterEach

@@ -1,18 +1,20 @@
 package pl.dolien.freetube.service;
 
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dolien.freetube.dao.ReviewDao;
 import pl.dolien.freetube.dao.RoleDao;
 import pl.dolien.freetube.dao.UserDao;
+import pl.dolien.freetube.dao.UserRepository;
+import pl.dolien.freetube.entity.Review;
 import pl.dolien.freetube.entity.Role;
 import pl.dolien.freetube.entity.User;
+import pl.dolien.freetube.entity.Post;
 import pl.dolien.freetube.user.WebUser;
 
 import java.util.*;
@@ -23,18 +25,19 @@ public class UserServiceImpl implements UserService {
 
 	private UserDao userDao;
 
-	private RoleDao roleDao;
+	private UserRepository userRepository;
 
-	private JdbcTemplate jdbc;
+	private RoleDao roleDao;
 
 	private BCryptPasswordEncoder passwordEncoder;
 
+	private ReviewService reviewService;
+
 	@Autowired
-	public UserServiceImpl(UserDao userDao, RoleDao roleDao, JdbcTemplate jdbc, BCryptPasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserDao userDao, RoleDao roleDao, BCryptPasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
 		this.passwordEncoder = passwordEncoder;
-		this.jdbc = jdbc;
 	}
 
 	@Override
@@ -78,8 +81,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void createUser(String userName, String password, String firstName, String lastName, String email, Collection<Role> roles) {
-		User user = new User(userName, password, true, firstName, lastName, email, roles);
+	public void createUser(String userName, String password, String firstName, String lastName, String email, Collection<Role> roles, List<Post> posts, List<Review> reviews) {
+		User user = new User(userName, password, true, firstName, lastName, email, roles, posts, reviews);
 		user.setId(0L);
 		userDao.save(user);
 	}
@@ -89,7 +92,18 @@ public class UserServiceImpl implements UserService {
 		User user = userDao.findByUserName(userName);
 		user.setRoles(null);
 
+		List<Post> posts = user.getPosts();
+
+		for (Post post : posts) {
+			post.setUser(null);
+		}
+
 		userDao.delete(user);
+	}
+
+	@Override
+	public List<User> findAllByAsc() {
+		return userRepository.findAllByOrderByUserNameAsc();
 	}
 
 	@Override
@@ -116,4 +130,5 @@ public class UserServiceImpl implements UserService {
 
 		return authorities;
 	}
+
 }

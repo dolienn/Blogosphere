@@ -44,10 +44,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-    @OneToMany(mappedBy = "user",
-               cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                          CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Video> videos;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
+               cascade = CascadeType.ALL)
+    private List<Post> posts;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Review> reviews;
 
     public User(String userName, String password, boolean enabled) {
         this.userName = userName;
@@ -56,14 +59,16 @@ public class User {
     }
 
     public User(String userName, String password, boolean enabled,
-                Collection<Role> roles) {
+                Collection<Role> roles, List<Post> posts, List<Review> reviews) {
         this.userName = userName;
         this.password = password;
         this.enabled = enabled;
         this.roles = roles;
+        this.posts = posts;
+        this.reviews = reviews;
     }
 
-    public User(String userName, String password, boolean enabled, String firstName, String lastName, String email, Collection<Role> roles) {
+    public User(String userName, String password, boolean enabled, String firstName, String lastName, String email, Collection<Role> roles, List<Post> posts, List<Review> reviews) {
         this.userName = userName;
         this.password = password;
         this.enabled = enabled;
@@ -71,14 +76,42 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.roles = roles;
+        this.posts = posts;
+        this.reviews = reviews;
     }
 
-    public void add(Video video) {
-        if(videos == null) {
-            videos = new ArrayList<>();
+    public void add(Post post) {
+        if(posts == null) {
+            posts = new ArrayList<>();
         }
 
-        videos.add(video);
-        video.setUser(this);
+        posts.add(post);
+        post.setUser(this);
+    }
+
+    public void add(Review review) {
+        if(review == null) {
+            reviews = new ArrayList<>();
+        }
+
+        reviews.add(review);
+
+    }
+
+    public void remove(Post post) {
+        posts.remove(post);
+    }
+
+    public void remove(Review review) {
+        reviews.remove(review);
+    }
+
+    public boolean isAdmin(User user) {
+        for (Role role : user.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

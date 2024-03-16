@@ -301,51 +301,15 @@ body{
 }
 
 .main .footer{
-    margin: 50px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        background: linear-gradient(45deg, blueviolet, lightgreen);
+        padding: 15px 9%;
+        padding-bottom: 100px;
+    }
 
-.main .copyright{
-    padding-bottom: 25px;
-    border-top: 1px solid #ccc;
-}
-
-.main .footer .footer-header{
-    max-width: 50%;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-    color: #fff;
-}
-
-.main .footer .footer-links{
-    display: flex;
-}
-
-.main .footer .footer-links .link{
-    margin-left: 70px;
-}
-
-.main .footer .footer-links .link h5{
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 40px;
-    color: #fff;
-}
-
-.main .footer .footer-links .link p{
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: 0.05em;
-    color: #ccc;
-}
-
-.copyright p{
-    font-size: 12px;
-    line-height: 36px;
-    color: #afafaf;
+.footer .container .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap:15px;
 }
 
 @media screen and (max-width: 1040px) {
@@ -494,8 +458,14 @@ body{
             <span id="scroll" class="item">Get Started</span>
         </div>
         <div class="nav-buttons" id="navMenu">
-            <button th:href="@{/showAddVideoPage}" class="nav-btn selected">ADD VIDEO</button>
-            <a th:href="@{/showMyLoginPage}"><button class="nav-btn">SIGN IN</button></a>
+            <a th:href="@{/admin/}" sec:authorize="hasRole('ADMIN')"><button class="nav-btn">ADMIN PANEL</button></a>
+            <a th:href="@{/post/my}" sec:authorize="hasRole('EMPLOYEE')"><button class="nav-btn">MY POSTS</button></a>
+            <a th:href="@{/post/upload}"><button class="nav-btn selected">ADD POST</button></a>
+            <a th:href="@{/showMyLoginPage}" sec:authorize="!hasRole('EMPLOYEE')"><button class="nav-btn">SIGN IN</button></a>
+            <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
+                  method="POST">
+                <button type="submit" class="nav-btn" >LOGOUT</button>
+            </form>
         </div>
 
         <button class="toggler">
@@ -506,41 +476,11 @@ body{
 
     <!-- Top Container -->
     <div class="top-container">
-        <div class="info-box">
-            <p class="header">
-                Discover, collect, and charity in extraordinary NFT marketplace
-            </p>
-            <p class="info-text">
-                Explore the best collections from hand-picked digital artists out there and find your gem here in
-                AsmrProg
-            </p>
-            <div class="info-buttons">
-                <button class="info-btn selected">Explore</button>
-                <button class="info-btn nav-btn">Create</button>
-            </div>
-        </div>
-        <div class="nft-box">
-            <img src="nft.jpg" class="nft-pic">
-            <div class="nft-content">
-                <div class="info">
-                    <img src="logo.png" class="info-img">
-                    <div>
-                        <p>
-                            Reza
-                        </p>
-                        <p>
-                            0.27 Eth
-                        </p>
-                    </div>
-                </div>
-                <div class="likes">
-                    <div class="icon-box">
-                        <i class='bx bx-heart'></i>
-                        258
-                    </div>
-                </div>
-            </div>
-        </div>
+        <form th:action="@{/}"
+              method="POST">
+            <input type="search" name="username">
+            <button type="submit">Search</button>
+        </form>
     </div>
     <!-- End of Top Container -->
 
@@ -580,37 +520,15 @@ body{
 
     <!-- Footer -->
     <div class="footer">
-        <div class="footer-header">
-            If you want something to be truly and wholeheartedly yours, turn it into an NFT.
-        </div>
-        <div class="footer-links">
-            <div class="link">
-                <h5>Marketplace</h5>
-                <p>Home</p>
-                <p>Get Started</p>
-                <p>Discover</p>
-                <p>Learn More</p>
+            <div class="footer-body">
+                <div class="box-container" th:each="post : ${posts}">
+                    <div class="box">
+                        <h3 th:text="${post.title}"></h3>
+                        <p th:text="${post.privacy}"></p>
+                        <a th:href="@{/post/note(postId=${post.id})}">READ</a>
+                    </div>
+                </div>
             </div>
-            <div class="link">
-                <h5>Company</h5>
-                <p>About Us</p>
-                <p>Services</p>
-                <p>Team Info</p>
-            </div>
-            <div class="link">
-                <h5>Contact</h5>
-                <p>Github</p>
-                <p>Instagram</p>
-                <p>Twitter</p>
-                <p>Facebook</p>
-            </div>
-
-        </div>
-
-    </div>
-    <!-- End of Footer -->
-    <div class="copyright">
-        <p>Copyright 2023, AsmrProg Youtube Channel.</p>
     </div>
 
 </div>
