@@ -11,7 +11,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.dolien.freetube.entity.User;
 import pl.dolien.freetube.service.UserService;
-import pl.dolien.freetube.user.WebUser;
+import pl.dolien.freetube.validation.WebUser;
 
 import java.util.logging.Logger;
 
@@ -36,15 +36,15 @@ public class RegistrationController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}	
 	
-	@GetMapping("/showRegistrationForm")
+	@GetMapping("")
 	public String showMyLoginPage(Model theModel) {
 		
 		theModel.addAttribute("webUser", new WebUser());
 		
-		return "register/registration-form";
+		return "register/registration";
 	}
 
-	@PostMapping("/processRegistrationForm")
+	@PostMapping("")
 	public String processRegistrationForm(
 			@Valid @ModelAttribute("webUser") WebUser theWebUser,
 			BindingResult theBindingResult,
@@ -55,7 +55,7 @@ public class RegistrationController {
 		
 		// form validation
 		 if (theBindingResult.hasErrors()){
-			 return "register/registration-form";
+			 return "register/registration";
 		 }
 
 		// check the database if user already exists
@@ -65,7 +65,7 @@ public class RegistrationController {
 			theModel.addAttribute("registrationError", "User name already exists.");
 
 			logger.warning("User name already exists.");
-        	return "register/registration-form";
+        	return "register/registration";
         }
         
         // create user account and store in the databse

@@ -5,7 +5,7 @@ import pl.dolien.freetube.entity.Review;
 import pl.dolien.freetube.entity.Role;
 import pl.dolien.freetube.entity.User;
 import pl.dolien.freetube.entity.Post;
-import pl.dolien.freetube.user.WebUser;
+import pl.dolien.freetube.validation.WebUser;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
 	User findByEmail(String email);
 
-	Iterable<User> findAll();
+	List<User> findAll();
 
 	boolean checkIfUserIsNull(String userName);
 

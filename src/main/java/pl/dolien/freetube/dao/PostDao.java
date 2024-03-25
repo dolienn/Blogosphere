@@ -2,15 +2,17 @@ package pl.dolien.freetube.dao;
 
 import pl.dolien.freetube.entity.Post;
 
+import java.util.List;
+
 public interface PostDao {
 
-    Iterable<Post> getAllPost();
+    List<Post> getAllPost();
 
-    Iterable<Post> findPostByUsername(String userName);
+    List<Post> findPostByUsername(String userName);
 
     Post findPostById(int id);
 
-    Post findPostByTitle(String title);
+    List<Post> findPostsByTitle(String title);
 
     void save(Post note);
 

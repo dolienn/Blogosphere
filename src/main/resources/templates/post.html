@@ -1,45 +1,495 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Post</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <title th:text="${post.user.getUserName()} + 's Post - Blogosphere'"></title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
 </head>
 
 <style>
-    .hidden-form {
-            display: none;
-            margin-top: 10px;
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --Playfair: 'Playfair Display', serif;
+        --Quicksand: 'Quicksand', sans-serif;
+        --Roboto: 'Roboto', sans-serif;
+        --dark: #3c393d;
+        --exDark: #2b2b2b;
+        --white: #fff;
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: var(--Quicksand);
+    }
+
+    body {
+        line-height: 1.4;
+        color: var(--dark);
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    li {
+        font-style: var(--Roboto);
+        color: #800000;
+    }
+
+    .container {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 1.2rem;
+    }
+
+    header {
+        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(/static/background.jpg) center/cover no-repeat fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+    }
+
+    .navbar {
+        background: rgba(0,0,0,0.6);
+        padding: 1.2rem;
+    }
+
+    .navbar .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .navbar-brand {
+        color: #fff;
+        font-size: 2rem;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        font-family: var(--Playfair);
+        letter-spacing: 1px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+        padding: 0.8rem 0 0.2rem 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.2s ease-out;
+    }
+
+    .navbar-toggle {
+        color: #fff;
+        font-size: 2rem;
+        padding: 0.6rem 0;
+        margin-top: 0.6rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .navbar-nav a, .navbar-nav button {
+        text-transform: uppercase;
+        font-family: var(--Roboto);
+        letter-spacing: 1px;
+        font-weight: 500;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        font-size: inherit;
+        letter-spacing: 3px;
+        transition: opacity 0.5s ease;
+        border: none;
+        background: none;
+    }
+
+    .navbar-nav a:hover, .navbar-nav button:hover {
+        opacity: 0.7;
+    }
+
+    .navbar-nav button {
+        cursor: pointer;
+        outline: none;
+    }   
+
+    .navbar-nav form {
+        display: inline;
+    }
+
+    .post {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;    
+    }
+
+    .post .post-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        border-radius: 15px;
+        padding: 3rem;
+        margin: 5rem;
+        background-color: #fff;
+        flex-grow: 1;
+        width: 80vw;
+        gap: 5rem;
+    }
+
+    .post .post-content h1 {
+        font-family: var(--Playfair);
+        font-size: 4rem;
+    }
+
+    .info {
+        margin-left: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    hr {
+        height: 5px;
+        width: 100%;
+        border: none;
+        background-color: var(--exDark);
+    }
+
+    .reviews {
+        font-family: var(--Quicksand);
+        background-color: var(--dark);
+    }
+
+    .reviews form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        gap: 2rem;
+    }
+
+    .reviews form textarea {
+        border: none;
+        outline: none;
+        padding-left: 0.6rem;
+        padding-top: 0.6rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--dark);
+        border-radius: 5px;
+        width: 100%;
+        height: 200px;
+    }
+
+    .reviews form textarea::placeholder {
+        color: #a9a9a9;
+    }
+
+    .reviews form button {
+        display: flex;
+        align-items: center;
+        padding: 15px 30px;
+        font-size: 16px;
+        color: #fff;
+        gap: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: var(--exDark);
+        cursor: pointer;
+    }
+
+    .reviews .reviews-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 3rem 1rem 3rem;
+    }
+    
+    .reviews .reviews-container hr {
+        background-color: #a9a9a9;
+        margin-bottom: 1rem;
+    }
+
+    .reviews .reviews-container .review {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        padding: 1rem;
+        gap: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .reviews .reviews-container .review .data {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .review .comment {
+        position: relative;
+        width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .review .comment-options-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 24px;
+        height: 24px;
+        padding-top: 0.5rem;
+        padding-right: 0.5rem;
+        background-color: var(--dark);
+        color: var(--white);
+        border: none;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+    .review .comment-options {
+        position: absolute;
+        background-color: var(--exDark);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        top: 1.8rem;
+        right: 0.5rem;
+    }
+
+    .review .comment-options a {
+        text-decoration: none;
+        color: var(--white);
+        cursor: pointer;
+    }
+
+    footer {
+        background: var(--exDark);
+        color: #fff;
+        text-align: center;
+        padding: 2rem 0;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.4rem;
+    }
+    .social-links a {
+        border: 2px solid #fff;
+        color: #fff;
+        display: block;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        text-decoration: none;
+        margin: 0 0.3rem;
+        transition: all 0.5s ease;
+    }
+    .social-links a:hover {
+        background: #fff;
+        color: var(--exDark);
+    }
+    footer span {
+        margin-top: 1rem;
+        display: block;
+        font-family: var(--Playfair);
+        letter-spacing: 2px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+
+    @media screen and (min-width: 540px) {
+        .navbar-nav a {
+            padding-right: 1.2rem;
+            padding-left: 1.2rem;
         }
-</style>
+    }
+
+    @media screen and (min-width: 768px) {
+        .navbar .container {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar-nav {
+            display: inline;
+            max-height: 1000px;
+        }
+        .navbar-toggle {
+            display: none;
+        }
+
+        .reviews form, .reviews .reviews-container {
+            justify-content: start;
+            align-items: start;
+        }
+
+        .reviews form textarea, .reviews .reviews-container .review {
+            width: 600px;
+        }
+    }
+
+    @media screen and (min-width: 992px) {
+        .post .post-content {
+            width: 50vw;
+        }
+    }
+    </style>
 
 <body>
-    <p th:text="${post.note}"></p>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!hasRole('EMPLOYEE')">Sign In</a>
+                    <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
+                        method="POST">
+                        <button type="submit" class="nav-btn" >LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+    
+        <section class="post">
+            <div class="post-content">
+                <h1 class="title" th:text="${post.title}"></h1>
+                <p class="note" th:text="${post.note}"></p>
+            </div>
+        </section>
 
-    <form th:action="@{/post/note}"
-          method="POST">
-        <input type="text" name="comment">
-        <input type="hidden" name="postId" th:value="${post.id}">
-        <button type="submit">Search</button>
-    </form>
+        <div class="info">
+            <p th:text="'Created: ' + ${#dates.format(post.date, 'dd MMMM, yyyy HH:mm')}"></p>
+            <p th:text="'Edited: ' + ${#dates.format(post.edited, 'dd MMMM, yyyy HH:mm')}"></p>
+        </div>
 
-    <div class="box-container" th:each="review : ${reviews}">
-        <div class="box">
-            <h3 th:text="${review.comment}"></h3>
-            <div th:if="${user.reviews.contains(review)}">
-                <button onclick="toggleReplayButton()">REPLAY</button><br>
-                <a th:href="@{/post/note/review/delete(postId=${post.id}, reviewId=${review.id})}">DELETE</a>
-                <div id="editForm" class="hidden-form">
-                    xdd
+    </header>
+
+    <hr>
+
+    <section class="reviews">
+        <form action="#" th:action="@{/post/note}"
+              th:object="${webReview}"
+              method="POST">
+            <textarea type="text" name="comment" th:field="*{comment}" placeholder="Comment" maxlength="500"></textarea>
+            <div th:if="${#fields.hasErrors('comment')}"
+                 style="margin-bottom: 25px" class="error">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('comment')}" th:text="'Comment ' + ${err}"></li>
+                    </ul>
+            </div>
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">
+                Send
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+    
+        <div class="reviews-container" th:each="review, iterStat : ${reviews}">
+            <hr>
+            <div class="review">
+                <div class="data">
+                    <p th:text="${review.user.getUserName()}"></p>
+                    <p th:text="${#dates.format(review.date, 'dd MMMM, yyyy HH:mm')}"></p>
+                </div>
+                <div class="comment">
+                    <div th:text="${review.comment}"></div>
+                </div>
+
+                <div>
+                    <button class="comment-options-button" id="'menu-btn-' + ${iterStat.index}">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="comment-options" id="'menu-options-' + ${iterStat.index}">
+                        <a href="#">REPLAY</a><br th:if="${review.user == user || user.isAdmin(user)}">
+                        <a th:href="@{/post/note/review/delete(postId=${post.id}, reviewId=${review.id})}"
+                        th:onclick="if (!(confirm('Are you sure you want to delete this review?'))) return false"
+                        th:if="${review.user == user || user.isAdmin(user)}">DELETE</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter' ></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram' ></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube' ></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
 
     <script>
-        function toggleReplayButton() {
-            var form = document.getElementById("editForm");
-            form.style.display = (form.style.display === "none") ? "block" : "none";
-        }
+document.addEventListener("DOMContentLoaded", function() {
+        // Pobierz wszystkie przyciski opcji i kontenery opcji
+        var menuBtns = document.querySelectorAll(".comment-options-button");
+        var menuOptions = document.querySelectorAll(".comment-options");
+
+        // Ukrycie wszystkich kontenerów opcji na początku
+        menuOptions.forEach(function(option) {
+            option.style.display = "none";
+        });
+
+        // Iteracja przez każdy przycisk opcji
+        menuBtns.forEach(function(btn, index) {
+            // Obsługa kliknięcia na przycisk
+            btn.addEventListener("click", function() {
+                // Pobierz odpowiedni kontener opcji na podstawie indeksu
+                var options = menuOptions[index];
+
+                // Jeśli kontener opcji jest widoczny, ukryj go; w przeciwnym razie pokaż
+                if (options.style.display === "block") {
+                    options.style.display = "none";
+                } else {
+                    options.style.display = "block";
+                }
+            });
+        });
+    });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var navbarToggle = document.querySelector('.navbar-toggle');
+            var navbarNav = document.querySelector('.navbar-nav');
+
+            navbarToggle.addEventListener('click', function () {
+                navbarNav.style.maxHeight = navbarNav.style.maxHeight ? null : navbarNav.scrollHeight + 'px';
+            });
+        });
     </script>
 </body>
 </html>

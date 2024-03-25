@@ -2,6 +2,8 @@ package pl.dolien.freetube.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.dolien.freetube.validation.WebPost;
+import pl.dolien.freetube.validation.WebReview;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +12,10 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @ToString(of = {"id", "userName", "enabled", "firstName", "lastName", "email", "roles"})
 public class User {
 
@@ -48,8 +52,8 @@ public class User {
                cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
+            cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     public User(String userName, String password, boolean enabled) {
@@ -67,7 +71,7 @@ public class User {
         this.posts = posts;
         this.reviews = reviews;
     }
-
+    
     public User(String userName, String password, boolean enabled, String firstName, String lastName, String email, Collection<Role> roles, List<Post> posts, List<Review> reviews) {
         this.userName = userName;
         this.password = password;
@@ -80,7 +84,12 @@ public class User {
         this.reviews = reviews;
     }
 
-    public void add(Post post) {
+    public void add(WebPost webPost) {
+        Post post = new Post();
+        post.setTitle(webPost.getTitle());
+        post.setDescription(webPost.getDescription());
+        post.setNote(webPost.getNote());
+        post.setPrivacy(webPost.getPrivacy());
         if(posts == null) {
             posts = new ArrayList<>();
         }

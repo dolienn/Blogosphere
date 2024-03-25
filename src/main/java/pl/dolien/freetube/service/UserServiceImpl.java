@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.dolien.freetube.dao.ReviewDao;
 import pl.dolien.freetube.dao.RoleDao;
 import pl.dolien.freetube.dao.UserDao;
 import pl.dolien.freetube.dao.UserRepository;
@@ -15,7 +14,7 @@ import pl.dolien.freetube.entity.Review;
 import pl.dolien.freetube.entity.Role;
 import pl.dolien.freetube.entity.User;
 import pl.dolien.freetube.entity.Post;
-import pl.dolien.freetube.user.WebUser;
+import pl.dolien.freetube.validation.WebUser;
 
 import java.util.*;
 
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Iterable<User> findAll() {
+	public List<User> findAll() {
 		return userDao.getAllUsers();
 	}
 

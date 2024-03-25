@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.dolien.freetube.entity.Post;
 import pl.dolien.freetube.entity.User;
 
+import java.util.List;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -20,7 +22,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Iterable<User> getAllUsers() {
+	public List<User> getAllUsers() {
 		TypedQuery<User> theQuery = entityManager.createQuery("from User", User.class);
 		return theQuery.getResultList();
 	}

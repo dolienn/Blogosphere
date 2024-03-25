@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
-    <title>Login - Blogosphere</title>
+    <title>Registration - Blogosphere</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <style>
@@ -30,6 +30,10 @@
 
         body {
             line-height: 1.4;
+        }
+
+        ul {
+            list-style: none;
         }
 
         img {
@@ -121,7 +125,7 @@
             display: inline;
         }
 
-        .login {
+        .register {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -130,41 +134,38 @@
             width: 100%;
         }
 
-        .login .login-content {
+        .register .register-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             border-radius: 15px;
             padding: 3rem;
-            margin: 5rem;
+            margin: 1.10rem;
             background-color: var(--white);
             width: 380px;
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
-        .login-content h1 {
+        .register-content h1 {
             font-size: 1.6rem;
             color: var(--exDark);
         }
 
-        .login-content .error {
-            color:var(--error);
+        .register-content .error {
+            color: var(--error);
+            font-style: var(--Roboto);
         }
 
-        .login-content .logout {
-            color: var(--success);
-        }
-
-        .login-content .inputs {
+        .register-content .inputs {
             position: relative;
         }
 
-        .login-content .form {
+        .register-content .form {
             width: 100%;
         }
 
-        .login-content .form label {
+        .register-content .form label {
             color: var(--dark);
             font-size: 1rem;
             font-weight: bold;
@@ -173,7 +174,7 @@
             margin-top: 1rem;
         }
 
-        .login-content .form input {
+        .register-content .form input {
             color: var(--exDark);
             font-size: 1rem;
             font-weight: 500;
@@ -189,7 +190,7 @@
             transition: all 0.3s ease;
         }
 
-        .login-content .form .inputs i{
+        .register-content .form .inputs i{
             position: absolute;
             font-size: 1.5rem;
             right: 10px;
@@ -197,15 +198,15 @@
             transition: all 0.3s ease;
         }
 
-        .login-content .form input:focus {
+        .register-content .form input:focus {
             border-color: var(--exDark);
         }
 
-        .login-content .form input::placeholder {
+        .register-content .form input::placeholder {
             color: #a9a9a9;
         }
 
-        .login-content form button {
+        .register-content form button {
             width: 100%;
             margin-top: 2rem;
             background: var(--exDark);
@@ -225,13 +226,13 @@
             opacity: 0.7;
         }
 
-        .login-content .links {
+        .register-content .links {
             display: flex;
             justify-content: space-between;
             margin-top: 1rem;
         }
 
-        .login-content .links a{
+        .register-content .links a{
             color: var(--exDark);
             font-weight: 600;
             font-size: 1rem;
@@ -324,38 +325,85 @@
             </div>
         </nav>
 
-        <section class="login">
-            <div class="login-content">
-                <h1>Login to your account</h1>
-                <form action="#" th:action="@{/authenticateTheUser}"
-                    method="POST" class="form">
-                    <div th:if="${param.error}" class="error">
-                        Invalid username and password.
-                    </div>
-
-                    <div th:if="${param.logout}" class="logout">
-                        You have been logged out.
-                    </div>
+        <section class="register">
+            <div class="register-content">
+                <h1>Register to your account</h1>
+                <form action="#" th:action="@{/register}"
+                    th:object="${webUser}" method="POST" class="form">
 
                     <label for="username">Username:</label>
                     <div class="inputs">
-                        <input type="text" name="username" id="username" placeholder="Enter your name" autocomplete="off" maxlength="20">
-                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="username" th:field="*{userName}" id="username" placeholder="Enter your name" autocomplete="off" maxlength="20">
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('userName')}"
+                         style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('userName')}" th:text="'Username ' + ${err}"></li>
+                        </ul>
+                    </div>
+                    <div th:if="${registrationError}" 
+                         style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:text="${registrationError}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="email">Email:</label>
+                    <div class="inputs">
+                        <input type="text" name="email" id="email" th:field="*{email}" placeholder="Enter your email" maxlength="64">
+                    </div>
+                
+                    <div th:if="${#fields.hasErrors('email')}"
+                         style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:if="${webUser.isEmailValid()}" th:each="err : ${#fields.errors('email')}" th:text="'Email ' + ${err}"></li>
+                            <li th:if="${!webUser.isEmailValid()}" th:text="${webUser.emailError}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="firstname">First name:</label>
+                    <div class="inputs">
+                        <input type="text" name="firstname" id="firstname" th:field="*{firstName}" placeholder="Enter your first name" maxlength="20">
+                    </div>
+                
+                    <div th:if="${#fields.hasErrors('firstName')}"
+                         style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('firstName')}" th:text="'First name ' + ${err}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="lastname">Last name:</label>
+                    <div class="inputs">
+                        <input type="text" name="lastname" id="lastname" th:field="*{lastName}" placeholder="Enter your last name" maxlength="20">
+                    </div>
+                
+                    <div th:if="${#fields.hasErrors('lastName')}"
+                         style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('lastName')}" th:text="'Last name ' + ${err}"></li>
+                        </ul>
                     </div>
 
                     <label for="password">Password:</label>
                     <div class="inputs">
-                        <input type="password" name="password" id="password" placeholder="Enter your Password" maxlength="40">
-                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" th:field="*{password}" id="password" placeholder="Enter your Password" maxlength="40">
                     </div>
 
-                    <button type="submit" class="login">Login</button>
-
-                    <div class="links">
-                        <a href="#">Reset Password</a>
-                        <a th:href="@{/register}">Don't have an account?</a>
+                    <div th:if="${#fields.hasErrors('password')}"
+                         style="margin-bottom: 25px" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('password')}" th:text="'Password ' + ${err}"></li>
+                        </ul>
                     </div>
+
+                    <button type="submit" class="register">register</button>
                 </form>
+
+                <div class="links">
+                    <a th:href="@{/login}">Back to login</a>
+                </div>
             </div>
         </section>
     </header>

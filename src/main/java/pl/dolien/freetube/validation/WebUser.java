@@ -1,26 +1,23 @@
-package pl.dolien.freetube.user;
+package pl.dolien.freetube.validation;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import pl.dolien.freetube.service.UserService;
-import pl.dolien.freetube.service.UserServiceImpl;
+import lombok.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class WebUser {
 
     @NotNull(message = "is required")
-    @Size(min = 4, message = "is required")
+    @Size(min = 4, message = "Minimum 4 characters")
     private String userName;
 
     @NotNull(message = "is required")
-    @Size(min = 4, message = "is required")
+    @Size(min = 4, message = "Minimum 4 characters")
     private String password;
 
     @NotNull(message = "is required")
@@ -50,4 +47,5 @@ public class WebUser {
 
         return true;
     }
+
 }

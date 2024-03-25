@@ -35,14 +35,13 @@ public class DemoSecurityConfig {
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers("/leaders/**").hasRole("MANAGER")
-                                .requestMatchers("/admin-panel/**").hasRole("ADMIN")
-                                .requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/showMyLoginPage")
+                                .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .permitAll()
@@ -50,7 +49,7 @@ public class DemoSecurityConfig {
                 .logout(LogoutConfigurer::permitAll
                 )
                 .exceptionHandling(configurer ->
-                        configurer.accessDeniedPage("/access-denied")
+                        configurer.accessDeniedPage("/error")
                 );
 
         return http.build();

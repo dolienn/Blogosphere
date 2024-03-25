@@ -1,11 +1,10 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
-    <title>Blogosphere - My posts</title>
+    <title>Error - Blogosphere</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <style>
@@ -17,6 +16,8 @@
             --Roboto: 'Roboto', sans-serif;
             --dark: #3c393d;
             --exDark: #2b2b2b;
+            --white: #fff;
+            --error: #800000;
         }
 
         * {
@@ -28,13 +29,15 @@
         body {
             line-height: 1.4;
             color: var(--dark);
-            display: flex;
-            flex-direction: column;
         }
 
-        img {
-            width: 100%;
-            display: block;
+        ul {
+            list-style: none;
+        }
+
+        li {
+            font-style: var(--Roboto);
+            color: var(--error);
         }
 
         .container {
@@ -43,8 +46,15 @@
             padding: 0 1.2rem;
         }
 
+        header {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(/static/background.jpg) center/cover no-repeat fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+        }
+
         .navbar {
-            background-color: #3d3d3d;
+            background: rgba(0,0,0,0.6);
             padding: 1.2rem;
         }
 
@@ -56,7 +66,7 @@
         }
 
         .navbar-brand {
-            color: #fff;
+            color: var(--white);
             font-size: 2rem;
             display: block;
             text-align: center;
@@ -76,7 +86,7 @@
         }
 
         .navbar-toggle {
-            color: #fff;
+            color: var(--white);
             font-size: 2rem;
             padding: 0.6rem 0;
             margin-top: 0.6rem;
@@ -89,7 +99,7 @@
             font-family: var(--Roboto);
             letter-spacing: 1px;
             font-weight: 500;
-            color: #fff;
+            color: var(--white);
             text-decoration: none;
             display: inline-block;
             padding: 0.4rem 0.8rem;
@@ -107,88 +117,54 @@
         .navbar-nav button {
             cursor: pointer;
             outline: none;
-        }
+        }   
 
         .navbar-nav form {
             display: inline;
         }
-    
-        .title {
-            text-align: center;
-            padding: 1rem 0;
-        }
 
-        .title h2 {
-            font-family: var(--Playfair);
-            font-size: 2.4rem;
-        }
-
-        .title p {
-            text-transform: uppercase;
-            padding: 0.6rem 0;
-        }
-
-        .blog {
-            background: #f9f9f9;
-            padding: 4.5rem 0;
-            flex-grow: 1;
-            min-height: 57.64vh;
-        }
-
-        .blog-content {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            justify-content: center;
-            text-align: center;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .blog-content h1 {
-            text-align: center;
-        }
-
-        .blog-item {
-            margin: 2.2rem 0;
-            padding: 0 1rem;
-        }
-
-        .blog-item span {
-            font-weight: 300;
-            display: block;
-            padding-bottom: 0.5rem;
-        }
-
-        .blog-item h2 {
-            font-family: var(--Playfair);
-            padding: 1rem 0;
-            font-size: 1.65rem;
-            font-weight: 500;
-        }
-
-        .blog-item p {
-            font-weight: 300;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            padding-bottom: 1.2rem;
-        }
-
-        .blog-item .blog-buttons a {
-            width: 70px;
+        .errorDiv {
+            display: flex;
+            flex-direction: column;
             font-family: var(--Roboto);
-            font-size: 1.1rem;
-            text-decoration: none;
-            color: var(--dark);
-            display: inline-block;
-            background-color: var(--dark);
-            color: #fff;
-            padding: 0.55rem 1.2rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.5s ease;
+            width: 100%;
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            min-height: 65.3vh;
+            flex-grow: 1;
         }
 
-        .blog-item .blog-buttons a:hover {
-            background: var(--exDark);
+        .errorDiv h1 {
+            font-size: 160px;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: 20px;
+        }
+
+        .errorDiv a {
+            text-decoration: none;
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 1rem 1.4rem;
+            display: inline-block;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .errorDiv a:hover {
+            background-color: var(--exDark);
+        }
+
+        .errorDiv .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
         }
 
         footer {
@@ -201,7 +177,6 @@
         .social-links {
             display: flex;
             justify-content: center;
-            margin-bottom: 1.4rem;
         }
 
         .social-links a {
@@ -230,9 +205,7 @@
             font-family: var(--Playfair);
             letter-spacing: 2px;
         }
-
-        /* Media Queries */
-
+    
         @media screen and (min-width: 540px) {
             .navbar-nav a {
                 padding-right: 1.2rem;
@@ -246,95 +219,46 @@
                 align-items: center;
                 justify-content: space-between;
             }
-
             .navbar-nav {
                 display: inline;
                 max-height: 1000px;
             }
-
             .navbar-toggle {
                 display: none;
             }
-
-            .blog-content {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-        }
-
-        @media screen and (min-width: 992px) {
-            .blog-content {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .blog-content {
-                grid-template-columns: repeat(4, 1fr);
-            }
         }
     </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var navbarToggle = document.querySelector('.navbar-toggle');
-            var navbarNav = document.querySelector('.navbar-nav');
-
-            navbarToggle.addEventListener('click', function () {
-                navbarNav.style.maxHeight = navbarNav.style.maxHeight ? null : navbarNav.scrollHeight + 'px';
-            });
-        });
-    </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
-            <i class="fa-solid fa-bars navbar-toggle"></i>
-            <div class="navbar-nav">
-                <a th:href="@{/}">Home</a>
-                <a th:href="@{/post/my}">Posts</a>
-                <a th:href="@{/post/upload}">Add Post</a>
-                <a th:href="@{/showMyLoginPage}" sec:authorize="!hasRole('EMPLOYEE')">Sign In</a>
-                <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
-                    method="POST">
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!hasRole('EMPLOYEE')">Sign In</a>
+                    <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
+                        method="POST">
                         <button type="submit" class="nav-btn" >LOGOUT</button>
-                </form>
-                <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <section class="blog" id="blog">
-        <div class="container">
-            <div class="title">
-                <h2>My Posts</h2>
-            </div>
-            <div class="blog-content" th:style="${#lists.isEmpty(userPosts)} ? 'grid-template-columns: repeat(1, 1fr);' : ''">
-                <div th:if="${#lists.isEmpty(userPosts)}">
-                    <h1>No posts available</h1>
-                </div>
-                <div th:else class="blog-item" th:each="post : ${userPosts}">
-                    <span th:text="${#dates.format(post.date, 'dd MMMM, yyyy')}"></span>
-                    <h2 th:text="${post.title}"></h2>
-                    <p th:text="${post.description}"></p>
-                    <div class="blog-buttons">
-                        <a th:href="@{/post/note(postId=${post.id})}">READ</a>
-                        <br>
-                        <a th:href="@{/post/edit(postId=${post.id})}">
-                            EDIT
-                        </a>
-                        <br>
-                        <a th:href="@{/post/delete(postId=${post.id})}"
-                            th:onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">
-                            DELETE
-                        </a>
-                    </div>
-                </div>
+        <div class="errorDiv">
+            <h2>Oops! Page not found.</h2>
+            <h1 th:if="${statusCode == null}" th:text="'404'">xd</h1>
+            <h1 th:if="${statusCode != null}" th:text="${statusCode}"></h1>
+            <div class="info">
+                <p>We can't find the page you're looking for.</p>
+                <a href="#" th:href="@{/}">Go Back Home</a>
             </div>
         </div>
-    </section>
+    </header>
 
     <footer>
         <div class="social-links">

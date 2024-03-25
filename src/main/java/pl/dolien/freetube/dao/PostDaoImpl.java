@@ -22,17 +22,17 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public Iterable<Post> getAllPost() {
+    public List<Post> getAllPost() {
         TypedQuery<Post> theQuery = entityManager.createQuery("from Post", Post.class);
         return theQuery.getResultList();
     }
 
     @Override
-    public Iterable<Post> findPostByUsername(String userName) {
+    public List<Post> findPostByUsername(String userName) {
         TypedQuery<Post> theQuery = entityManager.createQuery("from Post where user.userName=:uName and user.enabled=true", Post.class);
         theQuery.setParameter("uName", userName);
 
-        Iterable<Post> post = null;
+        List<Post> post = null;
         try {
             post = theQuery.getResultList();
         } catch (Exception ignored) {
@@ -48,13 +48,13 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public Post findPostByTitle(String title) {
-        TypedQuery<Post> theQuery = entityManager.createQuery("from Post where title=:postTitle", Post.class);
-        theQuery.setParameter("postTitle", title);
+    public List<Post> findPostsByTitle(String title) {
+        TypedQuery<Post> theQuery = entityManager.createQuery("SELECT p FROM Post p WHERE p.title LIKE :title", Post.class);
+        theQuery.setParameter("title", "%" + title + "%");
 
-        Post post = null;
+        List<Post> post = null;
         try {
-            post = theQuery.getSingleResult();
+            post = theQuery.getResultList();
         } catch (Exception ignored) {
             // TO DO
         }
