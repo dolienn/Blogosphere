@@ -1,292 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
-    <title>Blogosphere - My posts</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --Playfair: 'Playfair Display', serif;
-            --Quicksand: 'Quicksand', sans-serif;
-            --Roboto: 'Roboto', sans-serif;
-            --dark: #3c393d;
-            --exDark: #2b2b2b;
-        }
-
-        * {
-            padding: 0;
-            margin: 0;
-            font-family: var(--Quicksand);
-        }
-
-        body {
-            line-height: 1.4;
-            color: var(--dark);
-            display: flex;
-            flex-direction: column;
-        }
-
-        img {
-            width: 100%;
-            display: block;
-        }
-
-        .container {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 1.2rem;
-        }
-
-        .navbar {
-            background-color: #3d3d3d;
-            padding: 1.2rem;
-        }
-
-        .navbar .container {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .navbar-brand {
-            color: #fff;
-            font-size: 2rem;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            font-family: var(--Playfair);
-            letter-spacing: 1px;
-        }
-
-        .navbar-nav {
-            text-align: center;
-            padding: 0.8rem 0 0.2rem 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.2s ease-out;
-        }
-
-        .navbar-toggle {
-            color: #fff;
-            font-size: 2rem;
-            padding: 0.6rem 0;
-            margin-top: 0.6rem;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .navbar-nav a, .navbar-nav button {
-            text-transform: uppercase;
-            font-family: var(--Roboto);
-            letter-spacing: 1px;
-            font-weight: 500;
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            font-size: inherit;
-            letter-spacing: 3px;
-            transition: opacity 0.5s ease;
-            border: none;
-            background: none;
-        }
-
-        .navbar-nav a:hover, .navbar-nav button:hover {
-            opacity: 0.7;
-        }
-
-        .navbar-nav button {
-            cursor: pointer;
-            outline: none;
-        }
-
-        .navbar-nav form {
-            display: inline;
-        }
-    
-        .title {
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        .title h2 {
-            font-family: var(--Playfair);
-            font-size: 2.4rem;
-        }
-
-        .title p {
-            text-transform: uppercase;
-            padding: 0.6rem 0;
-        }
-
-        .blog {
-            background: #f9f9f9;
-            padding: 4.5rem 0;
-            flex-grow: 1;
-            min-height: 57.64vh;
-        }
-
-        .blog-content {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            justify-content: center;
-            text-align: center;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .blog-content h1 {
-            text-align: center;
-        }
-
-        .blog-item {
-            margin: 2.2rem 0;
-            padding: 0 1rem;
-        }
-
-        .blog-item span {
-            font-weight: 300;
-            display: block;
-            padding-bottom: 0.5rem;
-        }
-
-        .blog-item h2 {
-            font-family: var(--Playfair);
-            padding: 1rem 0;
-            font-size: 1.65rem;
-            font-weight: 500;
-        }
-
-        .blog-item p {
-            font-weight: 300;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            padding-bottom: 1.2rem;
-        }
-
-        .blog-item .blog-buttons a {
-            width: 70px;
-            font-family: var(--Roboto);
-            font-size: 1.1rem;
-            text-decoration: none;
-            color: var(--dark);
-            display: inline-block;
-            background-color: var(--dark);
-            color: #fff;
-            padding: 0.55rem 1.2rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.5s ease;
-        }
-
-        .blog-item .blog-buttons a:hover {
-            background: var(--exDark);
-        }
-
-        footer {
-            background: var(--exDark);
-            color: #fff;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.4rem;
-        }
-
-        .social-links a {
-            border: 2px solid #fff;
-            color: #fff;
-            display: block;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            text-decoration: none;
-            margin: 0 0.3rem;
-            transition: all 0.5s ease;
-        }
-
-        .social-links a:hover {
-            background: #fff;
-            color: var(--exDark);
-        }
-
-        footer span {
-            margin-top: 1rem;
-            display: block;
-            font-family: var(--Playfair);
-            letter-spacing: 2px;
-        }
-
-        /* Media Queries */
-
-        @media screen and (min-width: 540px) {
-            .navbar-nav a {
-                padding-right: 1.2rem;
-                padding-left: 1.2rem;
-            }
-        }
-
-        @media screen and (min-width: 768px) {
-            .navbar .container {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .navbar-nav {
-                display: inline;
-                max-height: 1000px;
-            }
-
-            .navbar-toggle {
-                display: none;
-            }
-
-            .blog-content {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-        }
-
-        @media screen and (min-width: 992px) {
-            .blog-content {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .blog-content {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var navbarToggle = document.querySelector('.navbar-toggle');
-            var navbarNav = document.querySelector('.navbar-nav');
-
-            navbarToggle.addEventListener('click', function () {
-                navbarNav.style.maxHeight = navbarNav.style.maxHeight ? null : navbarNav.scrollHeight + 'px';
-            });
-        });
-    </script>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <script th:src="@{/js/jsMyPosts.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleMyPosts.css}" type="text/css" />
+    <title>Blogosphere - My posts</title>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="container">
@@ -296,10 +24,9 @@
                 <a th:href="@{/}">Home</a>
                 <a th:href="@{/post/my}">Posts</a>
                 <a th:href="@{/post/upload}">Add Post</a>
-                <a th:href="@{/showMyLoginPage}" sec:authorize="!hasRole('EMPLOYEE')">Sign In</a>
-                <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
-                    method="POST">
-                        <button type="submit" class="nav-btn" >LOGOUT</button>
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                    <button type="submit" class="nav-btn">LOGOUT</button>
                 </form>
                 <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
             </div>
@@ -309,28 +36,105 @@
     <section class="blog" id="blog">
         <div class="container">
             <div class="title">
-                <h2>My Posts</h2>
+                <a th:href="@{/post/my}" th:style="${chosen} == true ? 'color: #2b2b2b;' : ''">My Posts</a>
+                <a th:href="@{/post/favorite}" th:style="${chosen} == false ? 'color: #2b2b2b;' : ''">Favorite Posts</a>
             </div>
-            <div class="blog-content" th:style="${#lists.isEmpty(userPosts)} ? 'grid-template-columns: repeat(1, 1fr);' : ''">
+
+            <div th:if="${totalPages > 1 && amountPage > 8}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${pageNumber}}"
+                                th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${endPage-1}}"
+                                th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-content"
+                th:style="${#lists.isEmpty(userPosts)} ? 'grid-template-columns: repeat(1, 1fr);' : ''">
                 <div th:if="${#lists.isEmpty(userPosts)}">
                     <h1>No posts available</h1>
                 </div>
                 <div th:else class="blog-item" th:each="post : ${userPosts}">
                     <span th:text="${#dates.format(post.date, 'dd MMMM, yyyy')}"></span>
                     <h2 th:text="${post.title}"></h2>
+                    <p th:if="${post.getUser().getUserName() != user.getUserName()}" th:text="'by ' + ${post.user.getUserName()}"></p>
                     <p th:text="${post.description}"></p>
                     <div class="blog-buttons">
                         <a th:href="@{/post/note(postId=${post.id})}">READ</a>
-                        <br>
-                        <a th:href="@{/post/edit(postId=${post.id})}">
+                        <br th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}">
+                        <a th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}" th:href="@{/post/edit(postId=${post.id})}">
                             EDIT
                         </a>
-                        <br>
-                        <a th:href="@{/post/delete(postId=${post.id})}"
-                            th:onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">
+                        <br th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}">
+                        <a th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}"
+                           th:href="@{/post/delete(postId=${post.id})}"
+                           th:onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">
                             DELETE
                         </a>
                     </div>
+                </div>
+            </div>
+
+            <div th:if="${totalPages > 1}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${pageNumber}}"
+                                th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${endPage-1}}"
+                                th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -342,16 +146,17 @@
                 <i class='fab fa-facebook-f'></i>
             </a>
             <a href="#">
-                <i class='fab fa-twitter' ></i>
+                <i class='fab fa-twitter'></i>
             </a>
             <a href="#">
-                <i class='fab fa-instagram' ></i>
+                <i class='fab fa-instagram'></i>
             </a>
             <a href="">
-                <i class='fab fa-youtube' ></i>
+                <i class='fab fa-youtube'></i>
             </a>
         </div>
         <span>Blogosphere Website</span>
     </footer>
 </body>
+
 </html>

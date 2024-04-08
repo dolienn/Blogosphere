@@ -1,58 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Admin Panel - Blogosphere</title>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/admin/styleAdminPanel.css}" type="text/css" />
 </head>
+
 <body>
 
-<h3>User's posts Directory</h3>
-<hr>
+    <nav class="navbar">
+        <div class="container">
+            <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+            <i class="fa-solid fa-bars navbar-toggle"></i>
+            <div class="navbar-nav">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/post/my}">Posts</a>
+                <a th:href="@{/post/upload}">Add Post</a>
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                    <button type="submit" class="nav-btn">LOGOUT</button>
+                </form>
+                <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    <h3 th:text="${user.getUserName() + 's posts Directory'}"></h3>
+    <hr>
 
 
-<div th:if="${#lists.isEmpty(posts)}">
-    <h2>User doesn't have any posts</h2>
-</div>
-<div th:if="${not #lists.isEmpty(posts)}">
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-        <tr>
-            <th>Title</th>
-            <th>Privacy</th>
-            <th>Reviews</th>
-            <th>Author</th>
-            <th>Action</th>
-        </tr>
-        </thead>
+    <div th:if="${#lists.isEmpty(posts)}">
+        <h2>User doesn't have any posts</h2>
+    </div>
+    <div th:if="${not #lists.isEmpty(posts)}">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Privacy</th>
+                    <th>Reviews</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-        <tbody>
-        <tr th:each="post : ${posts}">
+            <tbody>
+                <tr th:each="post : ${posts}">
 
-            <td th:text="${post.title}" />
-            <td th:text="${post.privacy}" />
-            <td>
-                <a th:href="@{/admin/post-reviews(postId=${post.id}, theUserName=${user.userName})}">SEE</a>
-            </td>
-            <td th:text="${user.userName}" />
-            <!-- Add update button Link -->
-            <td>
-                <a
-                        class="btn btn-info btn-sm">
-                    Update
-                </a>
+                    <td th:text="${post.title}" />
+                    <td th:text="${post.privacy}" />
+                    <td>
+                        <a th:href="@{/admin/post-reviews(postId=${post.id}, theUserName=${user.userName})}">SEE</a>
+                    </td>
+                    <td th:text="${user.userName}" />
 
-                <a th:href="@{/admin/post/delete(postId=${post.id}, theUserName=${user.userName})}"
-                        class="btn btn-danger btn-sm"
-                        onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">
-                    Delete
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+                    <td>
+                        <a th:href="@{/admin/post/delete(postId=${post.id}, theUserName=${user.userName})}"
+                            class="btn btn-danger btn-sm"
+                            onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>

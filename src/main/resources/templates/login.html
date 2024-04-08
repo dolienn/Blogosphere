@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleLogin.css}" type="text/css" />
+    <title>Login - Blogosphere</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="login">
+            <div class="login-content">
+                <h1>Login to your account</h1>
+                <form action="#" th:action="@{/authenticateTheUser}" method="POST" class="form">
+                    <div th:if="${param.error}" class="error">
+                        Invalid username and password.
+                    </div>
+
+                    <div th:if="${param.logout}" class="logout">
+                        You have been logged out.
+                    </div>
+
+                    <label for="username">Username:</label>
+                    <div class="inputs">
+                        <input type="text" name="username" id="username" placeholder="Enter your name"
+                            autocomplete="off" maxlength="20">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <label for="password">Password:</label>
+                    <div class="inputs">
+                        <input type="password" name="password" id="password" placeholder="Enter your Password"
+                            maxlength="40">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+
+                    <button type="submit" class="login">Login</button>
+
+                    <div class="links">
+                        <a th:href="@{/register}">Don't have an account?</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </header>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram'></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube'></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

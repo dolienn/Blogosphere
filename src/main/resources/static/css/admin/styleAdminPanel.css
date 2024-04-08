@@ -1,0 +1,21 @@
+body {
+  min-height: 100vh;
+  line-height: 1.4;
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.navbar {
+  background-color: var(--exDark);
+}
+
+h3 {
+  width: 100%;
+  text-align: center;
+}
+
+section {
+  max-width: 100%;
+}

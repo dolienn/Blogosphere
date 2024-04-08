@@ -1,0 +1,105 @@
+.container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 1.2rem;
+}
+
+.navbar {
+    background: rgba(0,0,0,0.6);
+    padding: 1.2rem;
+}
+
+.navbar .container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.navbar-brand {
+    color: var(--white);
+    font-size: 2rem;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--Playfair);
+    letter-spacing: 1px;
+}
+
+.navbar-nav {
+    text-align: center;
+    padding: 0.8rem 0 0.2rem 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
+}
+
+.navbar-toggle {
+    color: var(--white);
+    font-size: 2rem;
+    padding: 0.6rem 0;
+    margin-top: 0.6rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.navbar-nav a, .navbar-nav button {
+    text-transform: uppercase;
+    font-family: var(--Roboto);
+    letter-spacing: 1px;
+    font-weight: 500;
+    color: var(--white);
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    font-size: inherit;
+    letter-spacing: 3px;
+    transition: opacity 0.5s ease;
+    border: none;
+    background: none;
+}
+
+.navbar-nav a:hover, .navbar-nav button:hover {
+    opacity: 0.7;
+}
+
+.navbar-nav button {
+    cursor: pointer;
+    outline: none;
+}   
+
+.navbar-nav form {
+    display: inline;    
+}
+
+.navbar-nav a:hover,
+.navbar-nav button:hover {
+  opacity: 0.7;
+}
+
+@media screen and (min-width: 540px) {
+    .navbar-nav a {
+        padding-right: 1.2rem;
+        padding-left: 1.2rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .navbar .container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar-nav {
+        display: inline;
+        max-height: 1000px;
+    }
+
+
+    .navbar-toggle {
+        display: none;
+    }
+}

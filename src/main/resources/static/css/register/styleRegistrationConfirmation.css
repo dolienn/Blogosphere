@@ -1,0 +1,66 @@
+body {
+  line-height: 1.4;
+  color: var(--white);
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  font-style: var(--Roboto);
+  color: var(--error);
+}
+
+header {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(../../images/background-login-and-register-low.png) center/cover
+      no-repeat fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--Roboto);
+  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 65.3vh;
+  flex-grow: 1;
+}
+
+.success h2 {
+  font-size: 5rem;
+  margin: 0;
+  font-weight: 300;
+}
+
+.success .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.success a {
+  text-decoration: none;
+  background-color: var(--dark);
+  color: var(--white);
+  padding: 1rem 1.4rem;
+  display: inline-block;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.success a:hover {
+  background-color: var(--exDark);
+}

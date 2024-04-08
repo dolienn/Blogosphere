@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pl.dolien</groupId>
-	<artifactId>freetube</artifactId>
+	<artifactId>blogosphere</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>freetube</name>
 	<description>Project</description>

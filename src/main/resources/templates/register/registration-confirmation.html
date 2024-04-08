@@ -1,234 +1,18 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/register/styleRegistrationConfirmation.css}" type="text/css" />
     <title>Registration - Blogosphere</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --Playfair: 'Playfair Display', serif;
-            --Quicksand: 'Quicksand', sans-serif;
-            --Roboto: 'Roboto', sans-serif;
-            --dark: #3c393d;
-            --exDark: #2b2b2b;
-            --white: #fff;
-            --error: #800000;
-        }
-
-        * {
-            padding: 0;
-            margin: 0;
-            font-family: var(--Quicksand);
-        }
-
-        body {
-            line-height: 1.4;
-            color: var(--dark);
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        li {
-            font-style: var(--Roboto);
-            color: var(--error);
-        }
-
-        .container {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 1.2rem;
-        }
-
-        header {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(/static/background.jpg) center/cover no-repeat fixed;
-            display: flex;
-            flex-direction: column;
-            justify-content: stretch;
-        }
-
-        .navbar {
-            background: rgba(0,0,0,0.6);
-            padding: 1.2rem;
-        }
-
-        .navbar .container {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .navbar-brand {
-            color: var(--white);
-            font-size: 2rem;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            font-family: var(--Playfair);
-            letter-spacing: 1px;
-        }
-
-        .navbar-nav {
-            text-align: center;
-            padding: 0.8rem 0 0.2rem 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.2s ease-out;
-        }
-
-        .navbar-toggle {
-            color: var(--white);
-            font-size: 2rem;
-            padding: 0.6rem 0;
-            margin-top: 0.6rem;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .navbar-nav a, .navbar-nav button {
-            text-transform: uppercase;
-            font-family: var(--Roboto);
-            letter-spacing: 1px;
-            font-weight: 500;
-            color: var(--white);
-            text-decoration: none;
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            font-size: inherit;
-            letter-spacing: 3px;
-            transition: opacity 0.5s ease;
-            border: none;
-            background: none;
-        }
-
-        .navbar-nav a:hover, .navbar-nav button:hover {
-            opacity: 0.7;
-        }
-
-        .navbar-nav button {
-            cursor: pointer;
-            outline: none;
-        }   
-
-        .navbar-nav form {
-            display: inline;
-        }
-
-        .errorDiv {
-            display: flex;
-            flex-direction: column;
-            font-family: var(--Roboto);
-            width: 100%;
-            padding-top: 3rem;
-            padding-bottom: 2rem;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            min-height: 65.3vh;
-            flex-grow: 1;
-        }
-
-        .errorDiv h2 {
-            font-size: 5rem;
-            margin: 0;
-            font-weight: 300;
-        }
-
-        .errorDiv .info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .errorDiv a {
-            text-decoration: none;
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 1rem 1.4rem;
-            display: inline-block;
-            border-radius: 0.5rem;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
-
-        .errorDiv a:hover {
-            background-color: var(--exDark);
-        }
-
-        footer {
-            background: var(--exDark);
-            color: #fff;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-        }
-
-        .social-links a {
-            border: 2px solid #fff;
-            color: #fff;
-            display: block;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            text-decoration: none;
-            margin: 0 0.3rem;
-            transition: all 0.5s ease;
-        }
-
-        .social-links a:hover {
-            background: #fff;
-            color: var(--exDark);
-        }
-
-        footer span {
-            margin-top: 1rem;
-            display: block;
-            font-family: var(--Playfair);
-            letter-spacing: 2px;
-        }
-    
-        @media screen and (min-width: 540px) {
-            .navbar-nav a {
-                padding-right: 1.2rem;
-                padding-left: 1.2rem;
-            }
-        }
-
-        @media screen and (min-width: 768px) {
-            .navbar .container {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-            }
-            .navbar-nav {
-                display: inline;
-                max-height: 1000px;
-            }
-            .navbar-toggle {
-                display: none;
-            }
-        }
-    </style>
 </head>
+
 <body>
     <header>
         <nav class="navbar">
@@ -239,17 +23,16 @@
                     <a th:href="@{/}">Home</a>
                     <a th:href="@{/post/my}">Posts</a>
                     <a th:href="@{/post/upload}">Add Post</a>
-                    <a th:href="@{/login}" sec:authorize="!hasRole('EMPLOYEE')">Sign In</a>
-                    <form action="#" sec:authorize="hasRole('EMPLOYEE')" th:action="@{/logout}"
-                        method="POST">
-                        <button type="submit" class="nav-btn" >LOGOUT</button>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
                     </form>
                     <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
                 </div>
             </div>
         </nav>
 
-        <div class="errorDiv">
+        <div class="success">
             <h2>Successfully registered!</h2>
             <div class="info">
                 <p>You can now log in to your account.</p>
@@ -261,19 +44,20 @@
     <footer>
         <div class="social-links">
             <a href="#">
-                <i class='fab fa-facebook-f'></i>
+                <i class="fab fa-facebook-f"></i>
             </a>
             <a href="#">
-                <i class='fab fa-twitter' ></i>
+                <i class="fab fa-twitter"></i>
             </a>
             <a href="#">
-                <i class='fab fa-instagram' ></i>
+                <i class="fab fa-instagram"></i>
             </a>
             <a href="">
-                <i class='fab fa-youtube' ></i>
+                <i class="fab fa-youtube"></i>
             </a>
         </div>
         <span>Blogosphere Website</span>
     </footer>
 </body>
+
 </html>
