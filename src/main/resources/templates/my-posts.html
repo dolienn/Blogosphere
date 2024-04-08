@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <script th:src="@{/js/jsMyPosts.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleMyPosts.css}" type="text/css" />
+    <title>Blogosphere - My posts</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+            <i class="fa-solid fa-bars navbar-toggle"></i>
+            <div class="navbar-nav">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/post/my}">Posts</a>
+                <a th:href="@{/post/upload}">Add Post</a>
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                    <button type="submit" class="nav-btn">LOGOUT</button>
+                </form>
+                <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="blog" id="blog">
+        <div class="container">
+            <div class="title">
+                <a th:href="@{/post/my}" th:style="${chosen} == true ? 'color: #2b2b2b;' : ''">My Posts</a>
+                <a th:href="@{/post/favorite}" th:style="${chosen} == false ? 'color: #2b2b2b;' : ''">Favorite Posts</a>
+            </div>
+
+            <div th:if="${totalPages > 1 && amountPage > 8}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${pageNumber}}"
+                                th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${endPage-1}}"
+                                th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-content"
+                th:style="${#lists.isEmpty(userPosts)} ? 'grid-template-columns: repeat(1, 1fr);' : ''">
+                <div th:if="${#lists.isEmpty(userPosts)}">
+                    <h1>No posts available</h1>
+                </div>
+                <div th:else class="blog-item" th:each="post : ${userPosts}">
+                    <span th:text="${#dates.format(post.date, 'dd MMMM, yyyy')}"></span>
+                    <h2 th:text="${post.title}"></h2>
+                    <p th:if="${post.getUser().getUserName() != user.getUserName()}" th:text="'by ' + ${post.user.getUserName()}"></p>
+                    <p th:text="${post.description}"></p>
+                    <div class="blog-buttons">
+                        <a th:href="@{/post/note(postId=${post.id})}">READ</a>
+                        <br th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}">
+                        <a th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}" th:href="@{/post/edit(postId=${post.id})}">
+                            EDIT
+                        </a>
+                        <br th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}">
+                        <a th:if="${post.getUser().getUserName() == user.getUserName() || user.isAdmin(user)}"
+                           th:href="@{/post/delete(postId=${post.id})}"
+                           th:onclick="if (!(confirm('Are you sure you want to delete this post?'))) return false">
+                            DELETE
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${totalPages > 1}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${pageNumber}}"
+                                th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}"
+                                th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{${pageURL == 'my' ? '/post/my?page=' : '/post/favorite?page='} + ${endPage-1}}"
+                                th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram'></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube'></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

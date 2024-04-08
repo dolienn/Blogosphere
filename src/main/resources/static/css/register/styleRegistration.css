@@ -1,0 +1,124 @@
+body {
+  line-height: 1.4;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+header {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(../../images/background-login-and-register-low.png) center/cover
+      no-repeat fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.register .register-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 3rem;
+  margin: 1.1rem;
+  background-color: var(--white);
+  width: 25rem;
+  gap: 2.5rem;
+}
+
+.register-content h1 {
+  font-size: 1.6rem;
+  color: var(--exDark);
+}
+
+.register-content .error {
+  color: var(--error);
+  font-style: var(--Roboto);
+}
+
+.register-content .inputs {
+  position: relative;
+}
+
+.register-content .form {
+  width: 100%;
+}
+
+.register-content .form label {
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.03rem;
+  display: block;
+  margin-top: 1rem;
+}
+
+.register-content .form input {
+  color: var(--exDark);
+  font-size: 1rem;
+  font-weight: 500;
+  width: 100%;
+  height: 3rem;
+  letter-spacing: 0.03rem;
+  border: 0.15rem solid var(--placeholder);
+  background: transparent;
+  outline: none;
+  border-radius: 0.3rem;
+  text-indent: 1.2rem;
+  margin-top: 0.6rem;
+  transition: all 0.3s ease;
+}
+
+.register-content .form input:focus {
+  border-color: var(--exDark);
+}
+
+.register-content .form input::placeholder {
+  color: var(--placeholder);
+}
+
+.register-content form button {
+  width: 100%;
+  margin-top: 2rem;
+  background: var(--exDark);
+  color: var(--white);
+  border: none;
+  line-height: 3.5rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+  font-weight: 800;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.register-content .links {
+  display: flex;
+}
+
+.register-content .links a {
+  color: var(--exDark);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  text-underline-offset: 0.5rem;
+  text-decoration-color: var(--exDark);
+}

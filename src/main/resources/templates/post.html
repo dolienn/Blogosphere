@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <script th:src="@{/js/jsPost.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/stylePost.css}" type="text/css" />
+    <title th:text="${post.user.getUserName()} + 's Post - Blogosphere'"></title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+
+        <section class="post">
+            <div class="like-post">
+                <th:block th:if="${post.hasUserLiked(user)}">
+                    <a th:href="@{/post/removeLike(postId=${post.id})}"><i class="fa-solid fa-heart"></i></a>
+                </th:block>
+
+                <th:block th:unless="${post.hasUserLiked(user)}">
+                    <a th:href="@{/post/addLike(postId=${post.id})}"><i class="fa-regular fa-heart"></i></a>
+                </th:block>
+            </div>
+            <div class="post-content">
+                <h1 class="title" th:text="${post.title}"></h1>
+                <div class="note" th:text="${post.note}"></div>
+            </div>
+        </section>
+
+        <div class="info">
+            <p th:text="'Created: ' + ${#dates.format(post.date, 'dd MMMM, yyyy HH:mm')}"></p>
+            <p th:text="'Edited: ' + ${#dates.format(post.edited, 'dd MMMM, yyyy HH:mm')}"></p>
+        </div>
+
+    </header>
+
+    <hr>
+
+    <section class="reviews" id="reviews">
+        <form action="#" th:action="@{/post/note}" th:object="${webReview}" method="POST" class="reviewSender">
+            <textarea type="text" name="comment" th:field="*{comment}" placeholder="Comment" maxlength="500"></textarea>
+            <div th:if="${error}" style="margin-bottom: 25px" class="error">
+                <p class="error">Comment is required</p>
+            </div>
+            <input type="hidden" th:field="*{postId}">
+            <button type="submit" id="submitButton" disabled>
+                Send
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div th:if="${totalPages > 1 && amountPage > 5}">
+            <div class="pagination">
+                <ul>
+                    <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                        <a th:if="${currentPage > 0}"
+                            th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${currentPage - 1}}"
+                            aria-label="Previous">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                        th:class="${pageNumber == currentPage ? 'active' : ''}">
+                        <a th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${pageNumber}}"
+                            th:text="${pageNumber + 1}" class="link"
+                            th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+                    </li>
+
+                    <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                        <a th:if="${endPage != currentPage+1}"
+                            th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${currentPage + 1}}"
+                            aria-label="Next">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </li>
+
+                    <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                        th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                        <a th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${endPage-1}}"
+                            th:text="${endPage}" class="link"
+                            th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reviews-container" th:each="review, iterStat : ${reviews}">
+            <hr>
+            <div class="review">
+                <div class="data">
+                    <p th:text="${review.user.getUserName()}"></p>
+                    <p th:text="${#dates.format(review.editDate, 'dd MMMM, yyyy HH:mm')}"></p>
+                    <p th:if="${review.edited}">Edited</p>
+                </div>
+                <div class="comment">
+                    <div class="comment-text" th:text="${review.comment}"></div>
+                    <form th:action="@{/post/note/review/edit}" th:object="${webReview}" class="reviewEditor"
+                        method="POST" style="display: none;">
+                        <input type="hidden" th:field="*{postId}">
+                        <input type="hidden" name="reviewId" th:value="${review.id}">
+                        <textarea type="text" name="comment" class="edit-comment" th:field="*{comment}"
+                            placeholder="Comment" maxlength="500"></textarea>
+                        <div class="buttons">
+                            <button type="button" class="cancel">
+                                Cancel
+                            </button>
+                            <button type="submit" class="edit-submit" disabled>
+                                Send
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <button class="comment-options-button" id="'menu-btn-' + ${iterStat.index}">
+                        <i th:if="${review.user == user || user.isAdmin(user)}" class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="comment-options" id="'menu-options-' + ${iterStat.index}">
+                        <a th:if="${review.user == user || user.isAdmin(user)}" class="edit-button">EDIT</a>
+                        <br th:if="${review.user == user || user.isAdmin(user)}">
+                        <a th:href="@{/post/note/review/delete(postId=${post.id}, reviewId=${review.id})}"
+                            th:onclick="if (!(confirm('Are you sure you want to delete this review?'))) return false"
+                            th:if="${review.user == user || user.isAdmin(user)}">DELETE</a>
+                    </div>
+                </div>
+
+                <div class="like">
+                    <p th:text="${review.likesCount}"></p>
+
+                    <th:block th:if="${review.hasUserLiked(user)}">
+                        <a th:href="@{/post/note/review/removeLike(postId=${post.id}, reviewId=${review.id})}"><i
+                                class="fa-solid fa-thumbs-up"></i></a>
+                    </th:block>
+
+                    <th:block th:unless="${review.hasUserLiked(user)}">
+                        <a th:href="@{/post/note/review/addLike(postId=${post.id}, reviewId=${review.id})}"><i
+                                class="fa-regular fa-thumbs-up"></i></a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${totalPages > 1}">
+            <div class="pagination bottom-pagination">
+                <ul>
+                    <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                        <a th:if="${currentPage > 0}"
+                            th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${currentPage - 1}}"
+                            aria-label="Previous">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                        th:class="${pageNumber == currentPage ? 'active' : ''}">
+                        <a th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${pageNumber}}"
+                            th:text="${pageNumber + 1}" class="link"
+                            th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+                    </li>
+
+                    <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                        <a th:if="${endPage != currentPage+1}"
+                            th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${currentPage + 1}}"
+                            aria-label="Next">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </li>
+
+                    <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                        th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                        <a th:href="@{'/post/note?postId=' + ${post.id} + '&amp;page=' + ${endPage-1}}"
+                            th:text="${endPage}" class="link"
+                            th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram'></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube'></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

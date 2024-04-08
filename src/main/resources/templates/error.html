@@ -1,0 +1,65 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleError.css}" type="text/css" />
+    <title>Error - Blogosphere</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="errorDiv">
+            <h2>Oops! Page not found.</h2>
+            <h1 th:if="${statusCode == null}" th:text="'404'">xd</h1>
+            <h1 th:if="${statusCode != null}" th:text="${statusCode}"></h1>
+            <div class="info">
+                <p>We can't find the page you're looking for.</p>
+                <a href="#" th:href="@{/}">Go Back Home</a>
+            </div>
+        </div>
+    </header>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram'></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube'></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

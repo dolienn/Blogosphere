@@ -1,0 +1,268 @@
+
+body {
+    line-height: 1.4;
+    color: var(--dark);
+
+}
+img {
+    width: 100%;
+    display: block;
+}  
+
+header {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(../images/background-landing-low.png) center/cover no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.banner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.banner-title {
+    font-size: 3rem;
+    font-family: var(--Playfair);
+    line-height: 1.2;
+    margin-top: 0.6rem;
+}
+
+.banner-title span {
+    font-family: var(--Playfair);
+    color: var(--placeholder);
+}
+
+.banner p {
+    padding: 1rem 0 2rem 0;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    font-weight: 300;
+    word-spacing: 0.25rem;
+}
+
+.banner form {
+    background: var(--white);
+    border-radius: 2rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-input {
+    font-family: var(--Roboto);
+    font-size: 1.1rem;
+    width: 100%;
+    outline: 0;
+    padding: 0.6rem 0;
+    margin-left: 0.6rem;
+    border: none;
+}
+
+.search-input::placeholder {
+    text-transform: capitalize;
+}
+
+.search-btn {
+    width: 2.5rem;
+    font-size: 1.1rem;
+    color: var(--dark);
+    border: none;
+    background: transparent;
+    outline: 0;
+    cursor: pointer;
+}
+
+.title {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.title h2 {
+    font-family: var(--Playfair);
+    font-size: 2.4rem;
+}
+
+.title p {
+    text-transform: uppercase;
+    padding: 0.6rem 0;
+}
+
+.blog {
+    background: #f9f9f9;
+    padding: 4.5rem 0;
+}
+
+.blog-content {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    text-align: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.blog-content h1 {
+    text-align: center;
+}
+
+.blog-item {
+    margin: 2.2rem 0;
+    padding: 0 1rem;
+}
+
+.blog-item span {
+    font-weight: 300;
+    display: block;
+    padding-bottom: 0.5rem;
+}
+
+.blog-item h2 {
+    font-family: var(--Playfair);
+    padding: 1rem 0;
+    font-size: 1.65rem;
+    font-weight: 500;
+}
+
+.blog-item p {
+    font-weight: 300;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    padding-bottom: 1.2rem;
+}
+
+.blog-item a {
+    font-family: var(--Roboto);
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: var(--dark);
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--white);
+    padding: 0.55rem 1.2rem;
+    transition: all 0.5s ease;
+}
+
+.blog-item a:hover {
+    background: var(--exDark);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--exDark);
+    padding-top: 0.5rem;
+}
+
+.pagination ul li {
+    display: inline-block;
+    width: 2.8rem;
+    height: 2.8rem;
+    margin: 0 0.5rem 0 0.5rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.pagination ul li a {
+    text-decoration: none;
+    display: inline-block;
+    background: var(--placeholder);
+    color: inherit;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 2.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;   
+}
+
+.pagination ul li a:hover {
+    background: var(--dark);
+    color: var(--white);
+}
+
+.pagination ul li a i {
+    font-size: 1.1rem;
+}
+
+.pagination ul li a.current-page {
+    color: var(--white);
+    background: var(--exDark);
+}
+
+.disabled {
+    display: none;
+}
+
+.about {
+    padding: 4.5rem 0;
+
+}
+
+.about-text {
+    margin: 2rem 0;
+}
+
+.about-text > p {
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+    opacity: 0.8;
+}
+
+@media screen and (min-width: 540px) {
+    .banner-title {
+        font-size: 5rem;
+    }
+
+    .banner form {
+        margin-top: 1.4rem;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .search-input {
+        padding: 0.8rem 0;
+    }
+
+    .blog-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .blog-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .about-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3rem;
+        align-items: center;
+    }
+
+    .
+}
+
+@media screen and (min-width: 1200px) {
+    .blog-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

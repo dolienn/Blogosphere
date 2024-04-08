@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <script th:src="@{/js/jsLanding.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleLanding.css}" type="text/css" />
+    <title>Blogosphere - Home</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="banner">
+            <div class="container">
+                <h1 class="banner-title"><span>Blog</span> osphere</h1>
+                <p>Unleash creativity and explore the boundless universe of ideas</p>
+                <form action="#" th:action="@{/}" method="post" class="nav-form">
+                    <input type="text" class="search-input" name="search" id="search" placeholder="Search . . ." />
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <section class="blog" id="blog">
+        <div class="container">
+            <div class="title">
+                <h2>Latest Blogs</h2>
+                <div id="searchDisplay"></div>
+            </div>
+
+            <div th:if="${totalPages > 1 && amountPage > 8}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}" th:href="@{'/?page=' + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{'/?page=' + ${pageNumber}}" th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}" th:href="@{'/?page=' + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{'/?page=' + ${endPage-1}}" th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-content"
+                th:style="${#lists.isEmpty(posts)} ? 'grid-template-columns: repeat(1, 1fr);' : ''">
+                <div th:if="${#lists.isEmpty(posts)}">
+                    <h1>No posts available</h1>
+                </div>
+                <div th:else class="blog-item" th:each="post : ${posts}" th:if="${post.privacy == 'public'}">
+                    <span th:text="${#dates.format(post.date, 'dd MMMM, yyyy')}"></span>
+                    <h2 th:text="${post.title}"></h2>
+                    <p th:text="'by ' + ${post.user.getUserName()}"></p>
+                    <p th:text="${post.description}"></p>
+                    <a th:href="@{/post/note(postId=${post.id})}">Read More</a>
+                </div>
+            </div>
+
+            <div th:if="${totalPages > 1}">
+                <div class="pagination">
+                    <ul>
+                        <li th:class="${currentPage > 0 ? 'disabled' : ''}">
+                            <a th:if="${currentPage > 0}" th:href="@{'/?page=' + ${currentPage - 1}}"
+                                aria-label="Previous">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="pageNumber : ${#numbers.sequence(startPage, totalPages-1+startPage)}"
+                            th:class="${pageNumber == currentPage ? 'active' : ''}">
+                            <a th:href="@{'/?page=' + ${pageNumber}}" th:text="${pageNumber + 1}" class="link"
+                                th:classappend="${pageNumber == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+
+                        <li th:class="${endPage != currentPage+1 ? 'disabled' : ''}">
+                            <a th:if="${endPage != currentPage+1}" th:href="@{'/?page=' + ${currentPage + 1}}"
+                                aria-label="Next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </li>
+
+                        <li th:if="${endPage > totalPages && endPage-3 > currentPage && endPage > 4}"
+                            th:class="${endPage-1 == currentPage ? 'active' : ''}">
+                            <a th:href="@{'/?page=' + ${endPage-1}}" th:text="${endPage}" class="link"
+                                th:classappend="${endPage-1 == currentPage ? 'current-page' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="title">
+                    <h2>About me and website</h2>
+                    <p>art & deisgn is my passion</p>
+                </div>
+                <p>
+                    In my blog webapp, I embark on a journey fueled by my profound
+                    passion for art and design. It's not just a hobby; it's a way of
+                    life, an avenue for expressing emotions, thoughts, and perspectives.
+                    Through my posts, I delve into various aspects of creativity, from
+                    sketching and painting to digital design and sculpture. Every user
+                    has the opportunity to contribute, sharing their own insights,
+                    experiences, and creations. It's a platform where diverse voices
+                    converge, where we celebrate individuality and collective
+                    inspiration. With each post, we not only showcase our artistic
+                    endeavors but also invite constructive feedback and meaningful
+                    dialogue.
+                </p>
+                <p>
+                    Join me in this vibrant community of artists and designers, where
+                    creativity knows no bounds and imagination thrives. Together, let's
+                    paint a colorful canvas of ideas, ignite passion, and inspire one
+                    another to push the boundaries of art and design.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

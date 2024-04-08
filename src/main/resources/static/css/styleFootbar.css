@@ -1,0 +1,39 @@
+footer {
+    background: var(--exDark);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.4rem;
+}
+
+.social-links a {
+    border: 0.15rem solid var(--white);
+    color: var(--white);
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-decoration: none;
+    margin: 0 0.3rem;
+    transition: all 0.5s ease;
+}
+
+.social-links a:hover {
+    background: var(--white);
+    color: var(--exDark);
+}
+
+footer span {
+    margin-top: 1rem;
+    display: block;
+    font-family: var(--Playfair);
+    letter-spacing: 0.15rem;
+}

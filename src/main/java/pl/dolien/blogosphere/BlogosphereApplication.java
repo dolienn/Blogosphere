@@ -1,13 +1,13 @@
-package pl.dolien.freetube;
+package pl.dolien.blogosphere;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FreetubeApplication {
+public class BlogosphereApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FreetubeApplication.class, args);
+		SpringApplication.run(BlogosphereApplication.class, args);
 	}
 
 }

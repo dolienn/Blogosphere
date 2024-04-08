@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/register/styleRegistration.css}" type="text/css" />
+    <title>Registration - Blogosphere</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="register">
+            <div class="register-content">
+                <h1>Register to your account</h1>
+                <form action="#" th:action="@{/register}" th:object="${webUser}" method="POST" class="form">
+                    <label for="username">Username:</label>
+                    <div class="inputs">
+                        <input type="text" name="username" th:field="*{userName}" id="username"
+                            placeholder="Enter your name" autocomplete="off" maxlength="20" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('userName')}" style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('userName')}" th:text="'Username ' + ${err}"></li>
+                        </ul>
+                    </div>
+                    <div th:if="${registrationError}" style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:text="${registrationError}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="email">Email:</label>
+                    <div class="inputs">
+                        <input type="text" name="email" id="email" th:field="*{email}" placeholder="Enter your email"
+                            maxlength="64" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('email')}" style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:if="${webUser.isEmailValid()}" th:each="err : ${#fields.errors('email')}"
+                                th:text="'Email ' + ${err}"></li>
+                            <li th:if="${!webUser.isEmailValid()}" th:text="${webUser.emailError}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="firstname">First name:</label>
+                    <div class="inputs">
+                        <input type="text" name="firstname" id="firstname" th:field="*{firstName}"
+                            placeholder="Enter your first name" maxlength="20" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('firstName')}" style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('firstName')}" th:text="'First name ' + ${err}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="lastname">Last name:</label>
+                    <div class="inputs">
+                        <input type="text" name="lastname" id="lastname" th:field="*{lastName}"
+                            placeholder="Enter your last name" maxlength="20" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('lastName')}" style="margin-bottom: 0.5rem" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('lastName')}" th:text="'Last name ' + ${err}"></li>
+                        </ul>
+                    </div>
+
+                    <label for="password">Password:</label>
+                    <div class="inputs">
+                        <input type="password" name="password" th:field="*{password}" id="password"
+                            placeholder="Enter your Password" maxlength="40" autocomplete="new-password" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('password')}" style="margin-bottom: 25px" class="error">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('password')}" th:text="'Password ' + ${err}"></li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="register">register</button>
+                </form>
+
+                <div class="links">
+                    <a th:href="@{/login}">Back to login</a>
+                </div>
+            </div>
+        </section>
+    </header>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

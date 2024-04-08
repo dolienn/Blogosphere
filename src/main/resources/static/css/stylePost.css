@@ -1,0 +1,340 @@
+body {
+  line-height: 1.4;
+  color: var(--dark);
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  font-style: var(--Roboto);
+  color: var(--error);
+}
+
+header {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(../images/background-post-low.png) center/cover no-repeat fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+}
+
+.post .post-content {
+  border-radius: 0.5rem;
+  padding: 3rem;
+  margin: 0rem 5rem 5rem 5rem;
+  background-color: var(--white);
+  flex-grow: 1;
+  width: 80vw;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+.post .post-content h1 {
+  font-family: var(--Playfair);
+  font-size: 4rem;
+}
+
+.post .post-content div {
+  margin-top: 2rem;
+}
+
+.post .like-post {
+  text-align: center;
+  margin: 2rem 0 0 0;
+  width: 5rem;
+  padding: 1rem 1rem 0 1rem;
+  background-color: var(--white);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.post .like-post a {
+  text-decoration: none;
+}
+
+.post .like-post i {
+  color: var(--error);
+  font-size: 3rem;
+}
+
+.info {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+hr {
+  height: 0.3rem;
+  width: 100%;
+  border: none;
+  background-color: var(--exDark);
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--exDark);
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.pagination ul li {
+  display: inline-block;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin: 0 0.5rem 0 0.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.pagination ul li a {
+  text-decoration: none;
+  display: inline-block;
+  background: var(--placeholder);
+  color: var(--exDark);
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 2.8rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.pagination ul li a:hover {
+  background: var(--exDark);
+  color: var(--white);
+}
+
+.pagination ul li a i {
+  font-size: 1.1rem;
+}
+
+.pagination ul li a.current-page {
+  color: var(--white);
+  background: var(--exDark);
+}
+
+.bottom-pagination {
+  padding-bottom: 2rem;
+}
+
+.disabled {
+  display: none;
+}
+
+.reviews {
+  font-family: var(--Quicksand);
+  background-color: var(--dark);
+}
+
+.reviews .reviewSender {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 2rem;
+}
+
+.reviews .reviewSender textarea {
+  border: none;
+  outline: none;
+  padding-left: 0.6rem;
+  padding-top: 0.6rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--dark);
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 200px;
+  resize: none;
+}
+
+.reviews .reviewSender textarea::placeholder {
+  color: var(--placeholder);
+}
+
+.reviews .reviewSender button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  gap: 0.7rem;
+  border: none;
+  border-radius: 0.2rem;
+  background-color: var(--dark);
+  box-shadow: inset 0 0 0 0.1rem var(--exDark);
+  cursor: block;
+  transition: all 0.3s ease;
+}
+
+.reviews .reviews-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 3rem 1rem 3rem;
+}
+
+.reviews .reviews-container hr {
+  background-color: #a9a9a9;
+  margin-bottom: 1rem;
+}
+
+.reviews .reviews-container .review {
+  position: relative;
+  width: 100%;
+  color: #fff;
+  padding: 1rem;
+  gap: 1rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.reviews .reviews-container .review .data {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.review .reviewEditor {
+  width: 100%;
+}
+
+.review .reviewEditor textarea {
+  background: inherit;
+  color: inherit;
+  resize: none;
+  border: none;
+  outline: none;
+  font-size: inherit;
+  width: 100%;
+}
+
+.review .reviewEditor .buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
+}
+
+.review .reviewEditor .cancel {
+  background-color: var(--exDark);
+  cursor: pointer;
+}
+
+.review .reviewEditor button {
+  font-size: 0.9rem;
+  width: 5rem;
+  height: 3rem;
+  color: var(--white);
+  margin-top: 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--dark);
+  box-shadow: inset 0 0 0 0.1rem var(--exDark);
+  cursor: block;
+  transition: all 0.3s ease;
+}
+
+.review .comment {
+  position: relative;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.review .comment-options-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: var(--dark);
+  color: var(--white);
+  border: none;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.review .comment-options {
+  position: absolute;
+  background-color: var(--exDark);
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  top: 1.8rem;
+  right: 0.5rem;
+}
+
+.review .comment-options a {
+  text-decoration: none;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.review .like {
+  display: flex;
+  justify-content: flex-end;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.review .like p {
+  font-size: 1.1rem;
+}
+
+.review .like a {
+  text-decoration: none;
+}
+
+.review .like i {
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+.error {
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .reviews .reviewSender,
+  .reviews .reviews-container {
+    justify-content: start;
+    align-items: start;
+  }
+
+  .reviews .reviewSender textarea,
+  .reviews .reviews-container .review {
+    width: 600px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .post .post-content {
+    width: 60vw;
+  }
+}

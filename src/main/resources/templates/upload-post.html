@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://kit.fontawesome.com/04d7bae26f.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/navbarButton.js}"></script>
+    <script th:src="@{/js/jsUploadPost.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleNavbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleFootbar.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/css/styleUploadPost.css}" type="text/css" />
+    <title>Blogosphere - Creating Post</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a th:href="@{/}" class="navbar-brand">Blogosphere</a>
+                <i class="fa-solid fa-bars navbar-toggle"></i>
+                <div class="navbar-nav">
+                    <a th:href="@{/}">Home</a>
+                    <a th:href="@{/post/my}">Posts</a>
+                    <a th:href="@{/post/upload}">Add Post</a>
+                    <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Sign In</a>
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST">
+                        <button type="submit" class="nav-btn">LOGOUT</button>
+                    </form>
+                    <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="post">
+            <form action="#" th:action="@{/post/upload}" th:object="${webPost}" method="POST">
+
+                <input type="hidden" name="id" th:field="*{id}">
+
+                <input type="text" name="title" class="inputs" th:field="*{title}" placeholder="Title" maxlength="18">
+                <div th:if="${#fields.hasErrors('title')}" style="margin-bottom: 0.5rem" class="error">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('title')}" th:text="'Title ' + ${err}"></li>
+                    </ul>
+                </div>
+
+                <input type="text" name="description" class="inputs" th:field="*{description}" placeholder="Description"
+                    maxlength="18">
+                <div th:if="${#fields.hasErrors('description')}" style="margin-bottom: 25px" class="error">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('description')}" th:text="'Description ' + ${err}"></li>
+                    </ul>
+                </div>
+
+                <textarea type="text" name="note" id="myTextarea" class="inputs" th:field="*{note}" placeholder="Post"
+                    maxlength="10000"></textarea>
+                <div th:if="${#fields.hasErrors('note')}" style="margin-bottom: 25px" class="error">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('note')}" th:text="'Note ' + ${err}"></li>
+                    </ul>
+                </div>
+
+                <input type="checkbox" id="check" class="checkbox" th:checked="${webPost.privacy == 'private'}">
+                <label for="check" class="button">
+                    <p class="public">PUBLIC</p>
+                    <p class="private" id="private">PRIVATE</p>
+                </label>
+                <input type="hidden" name="privacy" th:field="*{privacy}" id="privacyInput" value="public">
+                <button type="submit">
+                    Upload Post
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </section>
+    </header>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">
+                <i class='fab fa-facebook-f'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-twitter'></i>
+            </a>
+            <a href="#">
+                <i class='fab fa-instagram'></i>
+            </a>
+            <a href="">
+                <i class='fab fa-youtube'></i>
+            </a>
+        </div>
+        <span>Blogosphere Website</span>
+    </footer>
+</body>
+
+</html>

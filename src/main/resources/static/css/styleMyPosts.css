@@ -1,0 +1,171 @@
+body {
+  line-height: 1.4;
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+.navbar {
+  background-color: var(--exDark);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.title a {
+  text-decoration: none;
+  color: var(--placeholder);
+  font-family: var(--Playfair);
+  font-size: 2.4rem;
+}
+
+.title p {
+  text-transform: uppercase;
+  padding: 0.6rem 0;
+}
+
+.blog {
+  background: #f9f9f9;
+  padding: 4.5rem 0;
+  flex-grow: 1;
+  min-height: 57.64vh;
+}
+
+.blog-content {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  justify-content: center;
+  text-align: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.blog-content h1 {
+  text-align: center;
+}
+
+.blog-item {
+  margin: 2.2rem 0;
+  padding: 0 1rem;
+}
+
+.blog-item span {
+  font-weight: 300;
+  display: block;
+  padding-bottom: 0.5rem;
+}
+
+.blog-item h2 {
+  font-family: var(--Playfair);
+  padding: 1rem 0;
+  font-size: 1.65rem;
+  font-weight: 500;
+}
+
+.blog-item p {
+  font-weight: 300;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  padding-bottom: 1.2rem;
+}
+
+.blog-item .blog-buttons a {
+  width: 70px;
+  font-family: var(--Roboto);
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--dark);
+  display: inline-block;
+  background-color: var(--dark);
+  color: var(--white);
+  padding: 0.55rem 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.5s ease;
+}
+
+.blog-item .blog-buttons a:hover {
+  background: var(--exDark);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--exDark);
+  padding-top: 0.5rem;
+}
+
+.pagination ul li {
+  display: inline-block;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin: 0 0.5rem 0 0.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.pagination ul li a {
+  text-decoration: none;
+  display: inline-block;
+  background: var(--placeholder);
+  color: inherit;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 2.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination ul li a:hover {
+  background: var(--dark);
+  color: var(--white);
+}
+
+.pagination ul li a i {
+  font-size: 1.1rem;
+}
+
+.pagination ul li a.current-page {
+  color: var(--white);
+  background: var(--exDark);
+}
+
+.disabled {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .blog-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .blog-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .blog-content {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
